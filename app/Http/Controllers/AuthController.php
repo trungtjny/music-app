@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -33,10 +35,19 @@ class AuthController extends Controller
 
     public function register(CreateUserRequest $request)
     {
-        // $user =  User::create($request->only('email', 'name', 'password'));
-        // $user->roles()->sync(2);
+        DB::beginTransaction();
+        try {
+            $user =  User::create($request->only('email', 'name', 'password'));
+            $user->roles()->sync(2);
 
-        return '$user';
+            DB::commit();
+
+            return $user;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw new Exception($e->getMessage());
+        }
     }
 
     public function resetPassword()
