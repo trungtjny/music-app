@@ -18,8 +18,11 @@ class CreateMusicTable extends Migration
             $table->string('title');
             $table->unsignedBigInteger('user_upload');
             $table->unsignedBigInteger('album_id')->default(0);
-            $table->text('description');
-            $table->longText('lyrics');
+            $table->text('description')->nullable();
+            $table->longText('lyrics')->nullable();
+            $table->string('thumbnail');
+            $table->string('file_path');
+            $table->integer('views')->default(0);
             $table->foreign('user_upload')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();

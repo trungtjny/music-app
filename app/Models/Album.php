@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Ablum extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'user_id'];
+
+    public function music()
+    {
+        return $this->hasMany(Music::class, 'album_id');
+    }
 }
