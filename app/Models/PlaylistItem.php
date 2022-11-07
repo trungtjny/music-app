@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class PlaylistItem extends Model
 {
     use HasFactory;
+
 }

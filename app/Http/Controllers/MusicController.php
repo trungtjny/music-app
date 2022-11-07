@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Music;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,5 +79,13 @@ class MusicController extends Controller
     public function destroy($id)
     {
         return $this->music->findOrFail($id)->delete();
+    }
+
+    public function myMusic()
+    {
+        $userId = Auth::id();
+        $music = Music::where('user_upload', $userId)->get();
+
+        return $music;
     }
 }
