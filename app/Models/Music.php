@@ -20,6 +20,10 @@ class Music extends Model
         'thumbnail',
         'file_path',
         'views',
+        'time',
+        'date_of_birth',
+        'address',
+        'free'
     ];
 
     // lấy thông tin ca sĩ.
@@ -31,5 +35,9 @@ class Music extends Model
     public function musicView()
     {
         return $this->hasMany(MusicView::class, 'music_id')->whereDate('created_at', '>', Carbon::today()->subDay(28));
+    }
+
+    public function topDay() {
+        return $this->hasMany(MusicView::class, 'music_id')->whereDate('created_at', '>', Carbon::today()->subDay(3));
     }
 }

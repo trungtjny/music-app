@@ -23,6 +23,12 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role',
+        'avatar',
+        'nickname',
+        'active',
+        'address',
+        'date_of_birth'
     ];
 
     /**
@@ -78,5 +84,10 @@ class User extends Authenticatable implements JWTSubject
     public function music()
     {
         return $this->belongsToMany(Music::class, 'user_music');
+    }
+
+    public function singers()
+    {
+        return $this->belongsToMany(Role::class, 'user_role')->where('name', 'singer');
     }
 }

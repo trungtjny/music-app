@@ -17,6 +17,7 @@ class CreateMusicViewsTable extends Migration
             $table->unsignedBigInteger('music_id');
             $table->foreign('music_id')->references('id')->on('music');
             $table->dateTime('created_at')->default(date("Y-m-d H:i:s"));
+            $table->dateTime('updated_at')->default(date("Y-m-d H:i:s"));
             $table->primary(['music_id', 'created_at']);
         });
     }
