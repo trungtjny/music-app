@@ -22,7 +22,8 @@ class Music extends Model
         'views',
         'time',
         'date_of_birth',
-        'address'
+        'address',
+        'free'
     ];
 
     // lấy thông tin ca sĩ.

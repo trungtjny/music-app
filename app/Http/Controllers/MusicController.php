@@ -6,6 +6,7 @@ use App\Exceptions\PermissionNotAllowException;
 use App\Models\Album;
 use App\Models\Music;
 use App\Models\MusicView;
+use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -86,7 +87,6 @@ class MusicController extends Controller
         }
         $music = $this->music->findOrFail($id);
         $music->update($input);
-        $input['singers'] = explode(",", $input['singers']);
         $music->singer()->sync($input['singers']);
         return $music;
     }
@@ -106,18 +106,36 @@ class MusicController extends Controller
 
     public function bestMusic()
     {
-        $data = $this->music->with('singer')->withCount('topDay')->orderBy('music_view_count', 'desc')->limit(5)->get();
+        $data = $this->music->with('singer')->withCount('topDay')->orderBy('top_day_count', 'desc')->limit(5)->get();
 
         return $data;
     }
 
     public function search(Request $request)
     {
-        $musics = $this->music->where('name' , 'like', '%'.$request->key."%")->get();
-        $users = User::where('name' , 'like', '%'.$request->key."%")->get();
+        $key = $request->key;
+        $musics = $this->music->where('title' , 'like', '%'.$request->key."%")->get();
+        $list = Role::where('name', 'singer')->with(['users' => function($query)use ($key) {
+            $query->where('active', 1)->where('name' , 'like', '%'.$key."%");
+        }])->get();
+        $users = $list[0]->users;
         $albums = Album::where('name' , 'like', '%'.$request->key."%")->get();
 
         $data = ['user' => $users, 'musics' =>$musics, 'albums' =>$albums];
         return $data;
+    }
+
+    public function listSinger()
+    {
+        $list = Role::where('name', 'singer')->with(['users' => function($query) {
+            $query->where('active', 1);
+        }])->get();
+        return $list[0]->users;
+    }
+
+    public function detailSinger($id) {
+        $user = User::with('music')->findOrFail($id);
+        $albums = Album::where('user_id', $id)->with('music')->get();
+        return ['detail' => $user, 'albums' => $albums];
     }
 }

@@ -32,13 +32,18 @@ Route::middleware('auth:api')->group(function () {
 
 Route::get('/top-5-songs', [MusicController::class, 'bestMusic']);
 Route::get('/search', [MusicController::class, 'search']);
+Route::get('/list-singer', [MusicController::class, 'listSinger']);
+Route::get('/detail/singer/{id}', [MusicController::class, 'detailSinger']);
 Route::middleware('auth:api')->group(function () {
+    Route::get('/my-music', [MusicController::class, 'myMusic']);
     Route::get('auth/logout', [AuthController::class, 'logout']);
     Route::get('auth/info', [AuthController::class, 'getme']);
     Route::resource('/playlists', PlaylistController::class);
+    Route::post('/change-playlist', [ PlaylistController::class, 'change']);
     Route::get('list-verify', [AuthController::class, 'ListVerify']);
-    Route::resource('/albums', AlbumController::class);
+    Route::resource('/albums', AlbumController::class)->except(['store', 'destroy']);
     Route::middleware('permission:singer')->group(function() {
         Route::resource('/musics', MusicController::class)->only(['store','destroy']);
+        Route::resource('/albums', AlbumController::class)->only(['store','destroy']);
     });
 });

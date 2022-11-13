@@ -48,11 +48,27 @@ class PlaylistController extends Controller
     {
 
         $input = $request->all();
-        $this->playlist->findOrFail($id)->update($input);
+        $playlist =  $this->playlist->findOrFail($id);
+        $playlist->update($input);
+        $playlist->music()->sync($input['musics']);
     }
 
     public function destroy($id)
     {
-        //
+        $playlist =  $this->playlist->findOrFail($id);
+        $playlist->music()->detach();
+        $playlist->delete();
+        return true;
+    }
+
+    public function change(Request $request)
+    {
+        $playlist =  $this->playlist->findOrFail($request['playlist_id']);
+        if($request->status) {
+            $playlist->music()->attach($request->music_id);
+        } else {
+            $playlist->music()->detach($request->music_id);
+        }
+        return $playlist->music;
     }
 }

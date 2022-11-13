@@ -85,4 +85,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(Music::class, 'user_music');
     }
+
+    public function singers()
+    {
+        return $this->belongsToMany(Role::class, 'user_role')->where('name', 'singer');
+    }
 }

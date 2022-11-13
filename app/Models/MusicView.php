@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MusicView extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['music_id'];
 }
