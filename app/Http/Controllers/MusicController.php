@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\PermissionNotAllowException;
 use App\Models\Album;
 use App\Models\Music;
 use App\Models\MusicView;
@@ -37,6 +38,10 @@ class MusicController extends Controller
     public function store(Request $request)
     {
         $input = $request->input();
+        $user = Auth::user();
+        if(!$user->active) {
+            throw new PermissionNotAllowException();
+        }
         if ($request->hasFile('thumbnail')) {
             $image = $request->file('thumbnail');
             $type = $request->file('thumbnail')->extension();

@@ -45,9 +45,9 @@ class AlbumController extends Controller
     {
         $album = $this->albums->findOrFail($id);
         $input = $request->all();
-        $res = $album->update($input);
+        $album->update($input);
         Music::whereIn('id', $input['musics'])->where('album_id', 0)->update(['album_id' => $id]);
-        return $res;
+        return $album;
     }
 
     public function destroy($id)

@@ -34,6 +34,7 @@ Route::get('/top-5-songs', [MusicController::class, 'bestMusic']);
 Route::get('/search', [MusicController::class, 'search']);
 Route::middleware('auth:api')->group(function () {
     Route::get('auth/logout', [AuthController::class, 'logout']);
+    Route::get('auth/info', [AuthController::class, 'getme']);
     Route::resource('/playlists', PlaylistController::class);
     Route::get('list-verify', [AuthController::class, 'ListVerify']);
     Route::resource('/albums', AlbumController::class);

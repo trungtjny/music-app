@@ -20,7 +20,9 @@ class Music extends Model
         'thumbnail',
         'file_path',
         'views',
-        'time'
+        'time',
+        'date_of_birth',
+        'address'
     ];
 
     // lấy thông tin ca sĩ.
