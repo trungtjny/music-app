@@ -16,8 +16,8 @@ class PlaylistController extends Controller
     public function index()
     {
         $userId = Auth::id();
-
-        $list = $this->playlist->with('item.music')->get();
+        $list = $this->playlist->with('music')->get();
+        return $list;
     }
 
     public function create()
@@ -28,8 +28,9 @@ class PlaylistController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+        $input['user_id'] = Auth::id();
         $new = $this->playlist->create($input);
-        $new->music()->sync(explode(",", $input['singers']));
+        $new->music()->sync($input['musics']);
 
         return $new;
     }
@@ -41,12 +42,13 @@ class PlaylistController extends Controller
 
     public function edit($id)
     {
-        
     }
 
     public function update(Request $request, $id)
     {
-        //
+
+        $input = $request->all();
+        $this->playlist->findOrFail($id)->update($input);
     }
 
     public function destroy($id)

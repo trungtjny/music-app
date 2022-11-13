@@ -20,8 +20,9 @@ class CreateMusicTable extends Migration
             $table->unsignedBigInteger('album_id')->default(0);
             $table->text('description')->nullable();
             $table->longText('lyrics')->nullable();
-            $table->string('thumbnail');
+            $table->string('thumbnail')->default('asset/default/music.jpg');
             $table->string('file_path');
+            $table->integer('time')->nullable();
             $table->integer('views')->default(0);
             $table->foreign('user_upload')->references('id')->on('users');
             $table->timestamps();
