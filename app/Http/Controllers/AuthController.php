@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\VerifyAccountEvent;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
@@ -9,6 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -38,7 +40,7 @@ class AuthController extends Controller
         DB::beginTransaction();
         try {
             $user =  User::create($request->only('email', 'name', 'password'));
-            $user->roles()->sync(2);
+            $user->roles()->sync(4);
 
             DB::commit();
 
@@ -54,7 +56,30 @@ class AuthController extends Controller
     {
     }
 
-    public function updateAccount()
+    public function updateAccount(Request $request)
     {
+        User::findOrFail(Auth::id())->update($request->all());
+    }
+
+    public function HandleVerify(Request $request)
+    {
+        $status = $request->status;
+        $user = User::findOrFail($request->id);
+        if ($status) {
+            event(new VerifyAccountEvent($user));
+        }
+    }
+
+    public function ListVerify()
+    {
+        return User::where('active', 0)->with(['roles' => function ($query) {
+            $query->where('name', 'singer');
+        }])->get();
+    }
+
+    public function ShowVerify($id)
+    {
+        $user = User::findOrFail($id);
+        return $user;
     }
 }

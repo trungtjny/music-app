@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MusicController;
+use App\Http\Controllers\PlaylistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,8 +23,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('auth/register', [AuthController::class, 'register']);
 Route::post('auth/login', [AuthController::class, 'login']);
-Route::get('auth/logout', [AuthController::class, 'logout']);
 
+Route::resource('/musics', MusicController::class)->except(['store', 'destroy']);
+Route::resource('/albums', AlbumController::class)->except(['store', 'destroy']);
 Route::middleware('auth:api')->group(function () {
-    Route::resource('music', MusicController::class);
+    Route::resource('/playlists', PlaylistController::class);
+});
+
+Route::get('/top-5-songs', [MusicController::class, 'bestMusic']);
+Route::get('/search', [MusicController::class, 'search']);
+Route::middleware('auth:api')->group(function () {
+    Route::get('auth/logout', [AuthController::class, 'logout']);
+    Route::resource('/playlists', PlaylistController::class);
+    Route::get('list-verify', [AuthController::class, 'ListVerify']);
+    Route::resource('/albums', AlbumController::class);
+    Route::middleware('permission:singer')->group(function() {
+        Route::resource('/musics', MusicController::class)->only(['store','destroy']);
+    });
 });
