@@ -13,10 +13,12 @@ class CreateAblumsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ablums', function (Blueprint $table) {
+        Schema::create('albums', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->text('name');
+            $table->text('avatar_path')->nullable();
+            $table->text('description')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
@@ -29,6 +31,6 @@ class CreateAblumsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ablums');
+        Schema::dropIfExists('albums');
     }
 }

@@ -1,6 +1,8 @@
 $(function(){
     $('.select2-single').select2({
-        placeholder: "Select a state",
+        placeholder: "---Chọn một lựa chọn---",
+        theme: 'classic',
+        closeOnSelect: true,
     });
 
     $('.select2-multiple').select2({

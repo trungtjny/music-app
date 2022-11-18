@@ -55,5 +55,87 @@ Route::prefix('admin')->group(function () {
             'as' => 'categories.update',
             'uses' => 'App\Http\Controllers\Admin\CategoryController@update']);
     });
+    Route::prefix('employees')->group(function () {
+        Route::get('/',[
+            'as' => 'employees.index',
+            'uses' => 'App\Http\Controllers\Admin\UserController@empIndex']);
+        Route::get('/create',[
+            'as' => 'employees.create',
+            'uses' => 'App\Http\Controllers\Admin\UserController@empCreate']);
+        Route::post('/store',[
+            'as' => 'employees.store',
+            'uses' => 'App\Http\Controllers\Admin\UserController@empStore']);
+        Route::get('/edit/{id}',[
+            'as' => 'employees.edit',
+            'uses' => 'App\Http\Controllers\Admin\UserController@empEdit']);
+        Route::get('/delete/{id}',[
+            'as' => 'employees.delete',
+            'uses' => 'App\Http\Controllers\Admin\UserController@empDelete']);
+        Route::post('/update/{id}',[
+            'as' => 'employees.update',
+            'uses' => 'App\Http\Controllers\Admin\UserController@empUpdate']);
+    });
 
+    Route::prefix('artists')->group(function () {
+        Route::get('/',[
+            'as' => 'artists.index',
+            'uses' => 'App\Http\Controllers\Admin\UserController@artistIndex']);
+        Route::get('/create',[
+            'as' => 'artists.create',
+            'uses' => 'App\Http\Controllers\Admin\UserController@artistCreate']);
+        Route::post('/store',[
+            'as' => 'artists.store',
+            'uses' => 'App\Http\Controllers\Admin\UserController@artistStore']);
+        Route::get('/edit/{id}',[
+            'as' => 'artists.edit',
+            'uses' => 'App\Http\Controllers\Admin\UserController@artistEdit']);
+        Route::get('/delete/{id}',[
+            'as' => 'artists.delete',
+            'uses' => 'App\Http\Controllers\Admin\UserController@artistDelete']);
+        Route::post('/update/{id}',[
+            'as' => 'artists.update',
+            'uses' => 'App\Http\Controllers\Admin\UserController@artistUpdate']);
+    });
+    Route::prefix('customers')->group(function () {
+        Route::get('/',[
+            'as' => 'customers.index',
+            'uses' => 'App\Http\Controllers\Admin\UserController@customerIndex']);
+        Route::get('/create',[
+            'as' => 'customers.create',
+            'uses' => 'App\Http\Controllers\Admin\UserController@customerCreate']);
+        Route::post('/store',[
+            'as' => 'customers.store',
+            'uses' => 'App\Http\Controllers\Admin\UserController@customerStore']);
+        Route::get('/edit/{id}',[
+            'as' => 'customers.edit',
+            'uses' => 'App\Http\Controllers\Admin\UserController@customerEdit']);
+        Route::get('/delete/{id}',[
+            'as' => 'customers.delete',
+            'uses' => 'App\Http\Controllers\Admin\UserController@customerDelete']);
+        Route::post('/update/{id}',[
+            'as' => 'customers.update',
+            'uses' => 'App\Http\Controllers\Admin\UserController@customerUpdate']);
+    });
+
+     //Albums
+     Route::prefix('albums')->group(function () {
+        Route::get('/',[
+            'as' => 'albums.index',
+            'uses' => 'App\Http\Controllers\Admin\AlbumController@index']);
+        Route::get('/create',[
+            'as' => 'albums.create',
+            'uses' => 'App\Http\Controllers\Admin\AlbumController@create']);
+        Route::post('/store',[
+            'as' => 'albums.store',
+            'uses' => 'App\Http\Controllers\Admin\AlbumController@store']);
+        Route::get('/edit/{id}',[
+            'as' => 'albums.edit',
+            'uses' => 'App\Http\Controllers\Admin\AlbumController@edit']);
+        Route::get('/delete/{id}',[
+            'as' => 'albums.delete',
+            'uses' => 'App\Http\Controllers\Admin\AlbumController@delete']);
+        Route::post('/update/{id}',[
+            'as' => 'albums.update',
+            'uses' => 'App\Http\Controllers\Admin\AlbumController@update']);
+    });
 });

@@ -33,10 +33,10 @@ class AuthController extends Controller
 
     public function register(CreateUserRequest $request)
     {
-        // $user =  User::create($request->only('email', 'name', 'password'));
-        // $user->roles()->sync(2);
+        $user =  User::create($request->only('email', 'name', 'password'));
+        $user->roles()->sync(2);
 
-        return '$user';
+        return $user;
     }
 
     public function resetPassword()

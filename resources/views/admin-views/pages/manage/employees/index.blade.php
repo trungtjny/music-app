@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 @extends('admin-views.layouts.admin-layout')
 
@@ -27,7 +29,7 @@
 
 <div class="container-xxl flex-grow-1 container-p-y">
 
-  @include('admin-views.partials.content-header',['pageParent' => 'Quản lý danh mục Bài hát', 'pageName' => 'Tất cả danh mục'])
+  @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Nhân viên', 'pageName' => 'Tất cả Nhân viên'])
 
   <div class="toast-container">
     @if (session('success'))
@@ -66,13 +68,13 @@
       <div class="card mb-4">
         <div class="card-header d-flex justify-content-between my-2">
           <div class="p-2">
-            <h5 class="card-title mb-0">Danh sách danh mục Bài hát</h5>
+            <h5 class="card-title mb-0">Danh sách Nhân viên</h5>
           </div>
           <div class="pt-md-0">
-            <a href="{{ route('categories.create') }}" class="dt-button create-new btn btn-success" type="button">
+            <a href="{{ route('employees.create') }}" class="dt-button create-new btn btn-success" type="button">
               <span>
                 <i class="bx bx-plus me-sm-2"></i>
-                <span class="d-none d-sm-inline-block">Thêm mới danh mục</span>
+                <span class="d-none d-sm-inline-block">Thêm mới nhân viên</span>
               </span>
             </a>
           </div>
@@ -85,37 +87,38 @@
               <thead class="table-light">
                 <tr>
                   <th>ID</th>
-                  <th>Tên danh mục</th>
+                  <th>Tên nhân viên</th>
                   <th>Ảnh đại diện</th>
                   <th>Mô tả</th>
                   <th>Hành động</th>
                 </tr>
               </thead>
               <tbody class="table-border-bottom-0">
-                @foreach($categories as $category)
+              @foreach ($employees as $employee)
+
                 <tr>
-                  <td>{{$category->id}}</td>
-                  <td>{{$category->name}}</td>
+                  <td>{{$employee->id}}</td>
+                  <td>{{$employee->name}}</td>
                   <td>
-                    @if (isset($category->avatar_path))
-                    <img class="img-custom" width="150" height="100" src="{{ $category->avatar_path }}">
+                    @if (isset($employee->avatar_path))
+                    <img class="img-custom" width="150" height="100" src="{{ $employee->avatar_path }}">
                     @else
                     <img class="img-custom" width="150" height="100" src="https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
                     @endif
 
 
                   </td>
-                  <td>{{$category->description}}</td>
+                  <td>{{$employee->description}}</td>
 
                   <td>
-                    <a type="button" href="{{ route('categories.edit', ['id' => $category->id]) }}" class="btn btn-primary">
+                    <a type="button" href="{{route('employees.edit',['id' => $employee->id])}}" class="btn btn-primary">
                       <span>
                         <i class='bx bxs-edit'></i>
                         <span class="d-none d-sm-inline-block">Sửa</span>
                       </span>
                     </a>
                     <!-- Button trigger modal -->
-                    <a type="button" href="" class="btn btn-danger mx-1 action-delete" data-url="{{route('categories.delete', ['id' => $category->id])}}">
+                    <a type="button" href="" class="btn btn-danger mx-1 action-delete" data-url="{{route('employees.delete', ['id' => $employee->id])}}">
                       <span>
                         <i class='bx bx-trash'></i>
                         <span class="d-none d-sm-inline-block">Xóa</span>
@@ -298,3 +301,7 @@
   <!--/ Advance Styling Options -->
 </div>
 @endsection
+
+
+
+
