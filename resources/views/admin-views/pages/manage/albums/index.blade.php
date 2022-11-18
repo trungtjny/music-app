@@ -2,7 +2,7 @@
 @extends('admin-views.layouts.admin-layout')
 
 @section('admin-title')
-<title>Quản lý danh mục bài hát</title>
+<title>Quản lý Album bài hát</title>
 @endsection
 
 
@@ -27,7 +27,7 @@
 
 <div class="container-xxl flex-grow-1 container-p-y">
 
-  @include('admin-views.partials.content-header',['pageParent' => 'Quản lý danh mục Bài hát', 'pageName' => 'Tất cả danh mục'])
+  @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Album Bài hát', 'pageName' => 'Tất cả Album'])
 
   <div class="toast-container">
     @if (session('success'))
@@ -66,13 +66,13 @@
       <div class="card mb-4">
         <div class="card-header d-flex justify-content-between my-2">
           <div class="p-2">
-            <h5 class="card-title mb-0">Danh sách danh mục Bài hát</h5>
+            <h5 class="card-title mb-0">Danh sách Album Bài hát</h5>
           </div>
           <div class="pt-md-0">
-            <a href="{{ route('categories.create') }}" class="dt-button create-new btn btn-success" type="button">
+            <a href="{{ route('albums.create') }}" class="dt-button create-new btn btn-success" type="button">
               <span>
                 <i class="bx bx-plus me-sm-2"></i>
-                <span class="d-none d-sm-inline-block">Thêm mới danh mục</span>
+                <span class="d-none d-sm-inline-block">Thêm mới Album</span>
               </span>
             </a>
           </div>
@@ -85,37 +85,37 @@
               <thead class="table-light">
                 <tr>
                   <th>ID</th>
-                  <th>Tên danh mục</th>
+                  <th>Tên album</th>
                   <th>Ảnh đại diện</th>
                   <th>Mô tả</th>
                   <th>Hành động</th>
                 </tr>
               </thead>
               <tbody class="table-border-bottom-0">
-                @foreach($categories as $category)
+                @foreach($albums as $album)
                 <tr>
-                  <td>{{$category->id}}</td>
-                  <td>{{$category->name}}</td>
+                  <td>{{$album->id}}</td>
+                  <td>{{$album->name}}</td>
                   <td>
-                    @if (isset($category->avatar_path))
-                    <img class="img-custom" width="150" height="100" src="{{ $category->avatar_path }}">
+                    @if (isset($album->avatar_path))
+                    <img class="img-custom" width="150" height="100" src="{{ $album->avatar_path }}">
                     @else
                     <img class="img-custom" width="150" height="100" src="https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
                     @endif
 
 
                   </td>
-                  <td>{{$category->description}}</td>
+                  <td>{{$album->description}}</td>
 
                   <td>
-                    <a type="button" href="{{ route('categories.edit', ['id' => $category->id]) }}" class="btn btn-primary">
+                    <a type="button" href="{{ route('albums.edit', ['id' => $album->id]) }}" class="btn btn-primary">
                       <span>
                         <i class='bx bxs-edit'></i>
                         <span class="d-none d-sm-inline-block">Sửa</span>
                       </span>
                     </a>
                     <!-- Button trigger modal -->
-                    <a type="button" href="" class="btn btn-danger mx-1 action-delete" data-url="{{route('categories.delete', ['id' => $category->id])}}">
+                    <a type="button" href="" class="btn btn-danger mx-1 action-delete" data-url="{{route('albums.delete', ['id' => $album->id])}}">
                       <span>
                         <i class='bx bx-trash'></i>
                         <span class="d-none d-sm-inline-block">Xóa</span>

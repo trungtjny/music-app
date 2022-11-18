@@ -2,139 +2,119 @@
 @extends('admin-views.layouts.admin-layout')
 
 @section('admin-title')
-<title>Quản lý danh mục bài hát</title>
+<title>Sửa mới Album Bài hát</title>
 @endsection
-
-
 
 @section('admin-js')
+<script type="text/javascript" src="{{ asset('resources/js/admin-page/reuseable/preview-image.js') }}"></script>
+<script type="text/javascript" src="{{ asset('resources/js/admin-page/reuseable/select2.js') }}"></script>
+<script type="text/javascript" src="{{ asset('resources/js/admin-page/reuseable/tinymce.js') }}"></script>
 
-<script type="text/javascript" src="{{ asset('resources/js/admin-page/reuseable/hide-toast.js') }}"></script>
-<script type="text/javascript" src="{{ asset('resources/js/admin-page/reuseable/sweet-alert-2.js') }}"></script>
 @endsection
-
 
 @section('admin-css')
 <link rel="stylesheet" href="{{ asset('resources/css/admin-page/reuseable/img-fit.css') }}">
 </link>
 @endsection
 
-
-
 @section('admin-content')
-
-
 
 <div class="container-xxl flex-grow-1 container-p-y">
 
-  @include('admin-views.partials.content-header',['pageParent' => 'Quản lý danh mục Bài hát', 'pageName' => 'Tất cả danh mục'])
-
-  <div class="toast-container">
-    @if (session('success'))
-    <!-- Toast with Placements -->
-    <div class="bs-toast toast toast-placement-ex m-2 bg-success top-0 end-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="successToast">
-      <div class="toast-header">
-        <i class="bx bx-bell me-2"></i>
-        <div class="me-auto fw-semibold">Thông báo</div>
-        <small>vừa xong</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">{{ Session::get('success') }}</div>
-    </div>
-    <!-- Toast with Placements -->
-    @endif
-    @if (session('error'))
-    <!-- Toast with Placements -->
-    <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="successToast">
-      <div class="toast-header">
-        <i class="bx bx-bell me-2"></i>
-        <div class="me-auto fw-semibold">Thông báo</div>
-        <small>vừa xong</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">{{ Session::get('error') }}</div>
-    </div>
-    <!-- Toast with Placements -->
-    @endif
-  </div>
+    @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Album sản phẩm', 'pageName' => 'Sửa Album'])
 
 
-  <div class="row">
+    <div class="row">
 
-    <!-- Button with Badges -->
-    <div class="col-lg">
-      <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between my-2">
-          <div class="p-2">
-            <h5 class="card-title mb-0">Danh sách danh mục Bài hát</h5>
-          </div>
-          <div class="pt-md-0">
-            <a href="{{ route('categories.create') }}" class="dt-button create-new btn btn-success" type="button">
-              <span>
-                <i class="bx bx-plus me-sm-2"></i>
-                <span class="d-none d-sm-inline-block">Thêm mới danh mục</span>
-              </span>
-            </a>
-          </div>
+        <!-- Button with Badges -->
+        <div class="col-lg">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between my-2">
+                    <div class="p-2">
+                        <h5 class="card-title mb-0">Sửa Album bài hát</h5>
+                    </div>
+                    <!-- <div class="pt-md-0">
+                        <button class="dt-button create-new btn btn-primary" type="button">
+                            <span>
+                                <i class="bx bx-plus me-sm-2"></i>
+                                <span class="d-none d-sm-inline-block">Sửa mới Album</span>
+                            </span>
+                        </button>
+                    </div> -->
+                </div>
+
+                <div class="card-body">
+                    <form action="{{ route('albums.update',['id' => $album->id])}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-name">Tên Album:</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge speech-to-text">
+                                    <input type="text" name="name" value="{{$album->name}}" class="form-control" placeholder="Nhập hoặc nói tên Album" aria-describedby="text-to-speech-addon" required>
+                                    <span class="input-group-text" id="text-to-speech-addon">
+                                        <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-name">Nghệ sĩ:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control select2-single" name="user_id" required>
+                                    @foreach ($artists as $artist)
+                                    <option value="{{ $artist->id }}" {{( $artist->id == $artist->user_id) ? 'selected' : '' }}>{{$artist->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-company">Ảnh đại diện Album:</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" name="avatar_path" onchange="showSinglePicture(this,1);" id="basic-default-company" placeholder="ACME Inc.">
+                                @if (isset($album->avatar_path))
+                                    <img class="avatar1 my-3 img-custom" width="250" height="200" src="{{ $album->avatar_path }}">
+                                @else
+                                    <img class="avatar1 my-3 img-custom" width="250" height="200" src="  https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
+                                @endif
+                            </div>
+                        </div>
+                        <!-- <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <input type="text" id="basic-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-default-email2">
+                                    <span class="input-group-text" id="basic-default-email2">@example.com</span>
+                                </div>
+                                <div class="form-text">You can use letters, numbers &amp; periods</div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone No</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="basic-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-default-phone">
+                            </div>
+                        </div> -->
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-message">Mô tả chi tiết: </label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control tinymce-editor" name="description" id="exampleFormControlTextarea1" rows="12">{{$album->description}}</textarea>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">Xác nhận Sửa </button>
+                                <button type="reset" class="btn btn-secondary">Hủy </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
         </div>
-
-
-        <div class="card-body ">
-          <div class="table-responsive text-nowrap">
-            <table style="line-height: 3" id="table1" class="table table-hover table-lg">
-              <thead class="table-light">
-                <tr>
-                  <th>ID</th>
-                  <th>Tên danh mục</th>
-                  <th>Ảnh đại diện</th>
-                  <th>Mô tả</th>
-                  <th>Hành động</th>
-                </tr>
-              </thead>
-              <tbody class="table-border-bottom-0">
-                @foreach($categories as $category)
-                <tr>
-                  <td>{{$category->id}}</td>
-                  <td>{{$category->name}}</td>
-                  <td>
-                    @if (isset($category->avatar_path))
-                    <img class="img-custom" width="150" height="100" src="{{ $category->avatar_path }}">
-                    @else
-                    <img class="img-custom" width="150" height="100" src="https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
-                    @endif
-
-
-                  </td>
-                  <td>{{$category->description}}</td>
-
-                  <td>
-                    <a type="button" href="{{ route('categories.edit', ['id' => $category->id]) }}" class="btn btn-primary">
-                      <span>
-                        <i class='bx bxs-edit'></i>
-                        <span class="d-none d-sm-inline-block">Sửa</span>
-                      </span>
-                    </a>
-                    <!-- Button trigger modal -->
-                    <a type="button" href="" class="btn btn-danger mx-1 action-delete" data-url="{{route('categories.delete', ['id' => $category->id])}}">
-                      <span>
-                        <i class='bx bx-trash'></i>
-                        <span class="d-none d-sm-inline-block">Xóa</span>
-                      </span>
-                    </a>
-
-                  </td>
-
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-  <!-- Accordion -->
-  <!-- <h5 class="mt-4">Accordion</h5>
+    <!-- Accordion -->
+    <!-- <h5 class="mt-4">Accordion</h5>
               <div class="row">
                 <div class="col-md mb-4 mb-md-0">
                   <small class="text-light fw-semibold">Basic Accordion</small>
@@ -293,8 +273,8 @@
                   </div>
                 </div>
               </div> -->
-  <!--/ Accordion -->
+    <!--/ Accordion -->
 
-  <!--/ Advance Styling Options -->
+    <!--/ Advance Styling Options -->
 </div>
 @endsection
