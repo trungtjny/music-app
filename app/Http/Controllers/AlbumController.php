@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Album;
 use App\Models\Music;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AlbumController extends Controller
 {
@@ -16,13 +17,20 @@ class AlbumController extends Controller
     }
     public function index()
     {
-        return $this->albums->with('music')->get();
+        return $this->albums->with('music.singer')->with('singer')->get();
     }
 
     public function store(Request $request)
     {
         $input = $request->all();
         $input['user_id'] = Auth::id();
+        if ($request->hasFile('thumbnail')) {
+            $image = $request->file('thumbnail');
+            $type = $request->file('thumbnail')->extension();
+            $fileName = time() . '-albumns.' . $type;
+            $path = Storage::disk('local')->put('/public/albumns/' . $fileName, $image->getContent());
+            $input['thumbnail'] = 'storage/albumns/' . $fileName;
+        }
         $new = $this->albums->create($input);
         Music::whereIn('id', $input['musics'])->where('album_id', 0)->update(['album_id' => $new->id]);
         $new->music;
@@ -32,7 +40,7 @@ class AlbumController extends Controller
 
     public function show($id)
     {
-        $show = $this->albums->with('music')->findOrFail($id);
+        $show = $this->albums->with('music.singer')->with('singer')->findOrFail($id);
 
         return $show;
     }

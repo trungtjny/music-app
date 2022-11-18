@@ -73,9 +73,9 @@ class AuthController extends Controller
     {
     }
 
-    public function updateAccount(Request $request)
+    public function update(Request $request)
     {
-        $input = $request->only('email', 'name', 'password', 'address', 'date_of_birth');
+        $input = $request->only('email', 'name', 'password', 'address', 'date_of_birth', 'avatar');
         if ($request->hasFile('avatar')) {
             $image = $request->file('avatqar');
             $type = $request->file('avatar')->extension();
