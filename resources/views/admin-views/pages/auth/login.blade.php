@@ -126,7 +126,8 @@
               <h4 class="mb-2">Chào mừng đến với trang quản trị SGM Music! 👋</h4>
               <p class="mb-4">Hãy đăng nhập để bắt đầu</p>
 
-              <form id="formAuthentication" class="mb-3" action="" method="POST">
+              <form id="formAuthentication" class="mb-3" action="{{route('admin.auth.login')}}" method="post">
+                @csrf  
                 <div class="mb-3">
                   <label for="email" class="form-label">Email đăng nhập:</label>
                   <input

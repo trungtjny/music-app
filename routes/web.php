@@ -36,8 +36,18 @@ Route::get('/test2', function () {
 
 
 Route::prefix('admin')->group(function () {
+
+
+     // Đăng nhập và xử lý đăng nhập
+     Route::get('login', [ 'as' => 'admin.auth.index', 'uses' => 'App\Http\Controllers\Admin\AuthController@index']);
+     Route::post('login', [ 'as' => 'admin.auth.login', 'uses' => 'App\Http\Controllers\Admin\AuthController@login']);
+    //  Route::get('login2',  function(){
+    //     return "AAAA";
+    // })-> name('test.trung');
+     // Đăng xuất
+     Route::get('logout', [ 'as' => 'admin.auth.logout', 'uses' => 'App\Http\Controllers\Admin\AuthController@logout']);
     //Category
-    Route::prefix('categories')->group(function () {
+    Route::prefix('categories')->middleware('permission:crud_manager')->group(function () {
         Route::get('/',[
             'as' => 'categories.index',
             'uses' => 'App\Http\Controllers\Admin\CategoryController@index']);
@@ -57,7 +67,7 @@ Route::prefix('admin')->group(function () {
             'as' => 'categories.update',
             'uses' => 'App\Http\Controllers\Admin\CategoryController@update']);
     });
-    Route::prefix('employees')->group(function () {
+    Route::prefix('employees')->middleware('permission:crud_manager')->group(function () {
         Route::get('/',[
             'as' => 'employees.index',
             'uses' => 'App\Http\Controllers\Admin\UserController@empIndex']);
@@ -78,7 +88,7 @@ Route::prefix('admin')->group(function () {
             'uses' => 'App\Http\Controllers\Admin\UserController@empUpdate']);
     });
 
-    Route::prefix('artists')->group(function () {
+    Route::prefix('artists')->middleware('permission:manager')->group(function () {
         Route::get('/',[
             'as' => 'artists.index',
             'uses' => 'App\Http\Controllers\Admin\UserController@artistIndex']);
@@ -98,7 +108,7 @@ Route::prefix('admin')->group(function () {
             'as' => 'artists.update',
             'uses' => 'App\Http\Controllers\Admin\UserController@artistUpdate']);
     });
-    Route::prefix('customers')->group(function () {
+    Route::prefix('customers')->middleware('permission:manager')->group(function () {
         Route::get('/',[
             'as' => 'customers.index',
             'uses' => 'App\Http\Controllers\Admin\UserController@customerIndex']);
@@ -120,7 +130,7 @@ Route::prefix('admin')->group(function () {
     });
 
      //Albums
-     Route::prefix('albums')->group(function () {
+     Route::prefix('albums')->middleware('permission:manager')->group(function () {
         Route::get('/',[
             'as' => 'albums.index',
             'uses' => 'App\Http\Controllers\Admin\AlbumController@index']);
