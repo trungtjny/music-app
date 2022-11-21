@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('role_id');//lan
-            $table->float('coin')->nullable();//lan
+            $table->double('coin')->nullable();//lan
             $table->float('salary_per_month')->nullable();//lan
             $table->string('description')->nullable();//lan
             $table->tinyInteger('active')->default(0);

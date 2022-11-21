@@ -72,8 +72,9 @@ class UserController extends Controller
             
           
           } catch (\Exception $e) {
-                return redirect()->route('employees.index')->with('error','Thêm mới nhân viên thất bại! Đã xảy ra lỗi');
-          }
+                // return redirect()->route('employees.index')->with('error','Thêm mới nhân viên thất bại! Đã xảy ra lỗi');
+            dd($e);
+            }
     }
     public function empEdit($id)
     {
@@ -97,7 +98,7 @@ class UserController extends Controller
                 'gender' => $request->gender,
                 'email' => $request->email,
                 'password' =>  Hash::make($request->password),
-                // 'role_id' => 2,
+                'role_id' => 2,
                 'salary_per_month' => $request->salary_per_month,
                 'active' => $request->active,
                 'description' => $request->description,
@@ -198,12 +199,13 @@ class UserController extends Controller
                 
             }
             $userCreated = $this->user->create($userMapping);
-            return redirect()->route('artists.index')->with('success','Thêm mới nhân viên thành công!');
+            return redirect()->route('artists.index')->with('success','Thêm mới Nghệ sĩ thành công!');
             
           
           } catch (\Exception $e) {
-                return redirect()->route('artists.index')->with('error','Thêm mới nhân viên thất bại! Đã xảy ra lỗi');
-        }
+                // return redirect()->route('artists.index')->with('error','Thêm mới Nghệ sĩ thất bại! Đã xảy ra lỗi');
+                dd($e);
+            }
     }
     public function artistEdit($id)
     {
@@ -226,7 +228,7 @@ class UserController extends Controller
                 'gender' => $request->gender,
                 'email' => $request->email,
                 'password' =>  Hash::make($request->password),
-                // 'role_id' => 3,
+                'role_id' => 3,
                 'coin' => $request->coin,
                 'active' => $request->active,
                 'description' => $request->description,
@@ -357,7 +359,7 @@ class UserController extends Controller
                     'gender' => $request->gender,
                     'email' => $request->email,
                     'password' =>  Hash::make($request->password),
-                    // 'role_id' => 4,
+                    'role_id' => 4,
                     'coin' => $request->coin,
                     'active' => $request->active,
                     'description' => $request->description,

@@ -21,17 +21,17 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-        'avatar',
-        'nickname',
-        'active',
-        'address',
-        'date_of_birth'
-    ];
+    // protected $fillable = [
+    //     'name',
+    //     'email',
+    //     'password',
+    //     'role',
+    //     'avatar',
+    //     'nickname',
+    //     'active',
+    //     'address',
+    //     'date_of_birth'
+    // ];
     protected $guarded = ['id'];
 
     /**
@@ -83,11 +83,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Role::class, 'user_role');
     }
 
-<<<<<<< HEAD
+
     public function albums()
     {
         return $this->hasMany(Album::class);
-=======
+    }
     //xem cac bai hat cua minh
     public function music()
     {
@@ -97,6 +97,6 @@ class User extends Authenticatable implements JWTSubject
     public function singers()
     {
         return $this->belongsToMany(Role::class, 'user_role')->where('name', 'singer');
->>>>>>> 4c546c8e94aff470c8064591f2a1b17f95f24fce
+
     }
 }

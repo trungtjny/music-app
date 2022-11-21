@@ -18,9 +18,11 @@ Route::get('/', function () {
 });
 
 Route::get('/admin', function () {
-    return view('admin-views.pages.test-only.test1'); 
+    return view('admin-views.pages.auth.login'); 
 });
-
+Route::get('/admin/welcome', function () {
+    return view('admin-views.welcome'); 
+});
 
 Route::get('/test', function () {
     return view('admin-views.pages.test-only.test1');

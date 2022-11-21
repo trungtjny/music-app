@@ -11,21 +11,21 @@ class Music extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable  = [
-        'title',
-        'user_upload',
-        'album_id',
-        'description',
-        'lyrics',
-        'thumbnail',
-        'file_path',
-        'views',
-        'time',
-        'date_of_birth',
-        'address',
-        'free'
-    ];
-
+    // protected $fillable  = [
+    //     'title',
+    //     'user_upload',
+    //     'album_id',
+    //     'description',
+    //     'lyrics',
+    //     'thumbnail',
+    //     'file_path',
+    //     'views',
+    //     'time',
+    //     'date_of_birth',
+    //     'address',
+    //     'free'
+    // ];
+    protected $guarded  = ['id'];
     // lấy thông tin ca sĩ.
     public function singer()
     {

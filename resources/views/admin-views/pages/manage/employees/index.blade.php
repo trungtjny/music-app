@@ -4,7 +4,7 @@
 @extends('admin-views.layouts.admin-layout')
 
 @section('admin-title')
-<title>Quản lý danh mục bài hát</title>
+<title>Quản lý Nhân viên</title>
 @endsection
 
 
