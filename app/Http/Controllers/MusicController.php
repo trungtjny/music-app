@@ -25,14 +25,14 @@ class MusicController extends Controller
 
     public function index()
     {
-        $data = $this->music->with('singer')->withCount('musicView')->orderBy('music_view_count', 'desc')->get();
+        $data = $this->music->with(['category','singer'])->withCount('musicView')->orderBy('music_view_count', 'desc')->get();
 
         return $data;
     }
 
     public function list()
     {
-        $data = $this->music->orderBy('created_at', 'desc')->get();
+        $data = $this->music->with(['category','singer'])->orderBy('created_at', 'desc')->get();
 
         return $data;
     }
@@ -75,7 +75,7 @@ class MusicController extends Controller
         MusicView::create(['music_id' => $music->id]);
         $music->save();
 
-        return $music;
+        return $music->with(['category','singer']);
     }
 
     public function update(Request $request, $id)
@@ -117,10 +117,11 @@ class MusicController extends Controller
     public function search(Request $request)
     {
         $key = $request->key;
-        $musics = $this->music->where('title' , 'like', '%'.$request->key."%")->with('singer')->get();
-        $list = Role::where('name', 'singer')->with(['users' => function($query)use ($key) {
-            $query->where('active', 1)->where('name' , 'like', '%'.$key."%");
-        }])->get();
+        $musics = $this->music->where('title' , 'like', '%'.$request->key."%")->with(['category','singer'])->get();
+        $list = Role::where('name', 'singer')
+            ->with(['users' => function($query)use ($key) {
+                $query->where('active', 1)->where('name' , 'like', '%'.$key."%");
+            }])->get();
         $users = $list[0]->users;
         $albums = Album::where('name' , 'like', '%'.$request->key."%")->get();
 
@@ -137,9 +138,8 @@ class MusicController extends Controller
     }
 
     public function detailSinger($id) {
-        $user = User::with('music.singer')->findOrFail($id);
-        $albums = Album::where('user_id', $id)->with('singer')->with('music.singer');
-        logger($albums->toSql());
+        $user = User::with(['music.singer','category'])->findOrFail($id);
+        $albums = Album::where('user_id', $id)->with('singer')->with(['music.singer','category']);
         return ['detail' => $user, 'albums' => $albums->get()];
     }
 }
