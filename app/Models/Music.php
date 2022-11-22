@@ -40,7 +40,13 @@ class Music extends Model
         return $this->hasMany(MusicView::class, 'music_id')->whereDate('created_at', '>', Carbon::today()->subDay(28));
     }
 
-    public function topDay() {
+    public function topDay()
+    {
         return $this->hasMany(MusicView::class, 'music_id')->whereDate('created_at', '>', Carbon::today()->subDay(3));
+    }
+
+    public function category()
+    {
+        return $this->belongsToMany(Category::class, 'category_music');
     }
 }

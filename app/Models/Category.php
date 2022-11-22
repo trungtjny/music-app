@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     protected $table = 'categories';
+
     // protected $fillable= ['name', 'avatar_path','description'];
       protected $guarded= ['id'];
+
+    public function music()
+    {
+        return $this->belongsToMany(Music::class, 'category_music');
+    }
+
 }
