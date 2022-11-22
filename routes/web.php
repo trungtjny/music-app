@@ -40,13 +40,13 @@ Route::prefix('admin')->group(function () {
      Route::get('/login', [ 'as' => 'admin.auth.index', 'uses' => 'App\Http\Controllers\Admin\AuthController@index']);
      Route::post('/login', [ 'as' => 'admin.auth.login', 'uses' => 'App\Http\Controllers\Admin\AuthController@login']);
     
-     Route::get('/welcome', [ 'as' => 'admin.welcome', 'uses' => 'App\Http\Controllers\Admin\AuthController@welcome']);
+     Route::get('/welcome', [ 'as' => 'admin.welcome', 'uses' => 'App\Http\Controllers\Admin\AuthController@welcome'])->middleware('permission:manager');
      // Đăng xuất
      Route::get('/logout', [ 'as' => 'admin.auth.logout', 'uses' => 'App\Http\Controllers\Admin\AuthController@logout']);
     
     
     //My infomation
-    Route::get('/my-info', [ 'as' => 'admin.myinfo', 'uses' => 'App\Http\Controllers\Admin\UserController@myInfo']);
+    Route::get('/my-info', [ 'as' => 'admin.myinfo', 'uses' => 'App\Http\Controllers\Admin\UserController@myInfo'])->middleware('permission:manager');
 
      //Category
     Route::prefix('categories')->middleware('permission:crud_manager')->group(function () {
