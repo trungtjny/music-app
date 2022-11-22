@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 @extends('admin-views.layouts.admin-layout')
 
@@ -89,12 +87,13 @@
                   <th>ID</th>
                   <th>Tên Khách hàng</th>
                   <th>Ảnh đại diện</th>
-                  <th>Mô tả</th>
+                  <th>Email</th>
+                  <th>Trạng thái</th>
                   <th>Hành động</th>
                 </tr>
               </thead>
               <tbody class="table-border-bottom-0">
-              @foreach ($customers as $customer)
+                @foreach ($customers as $customer)
 
                 <tr>
                   <td>{{$customer->id}}</td>
@@ -108,8 +107,13 @@
 
 
                   </td>
-                  <td>{{$customer->description}}</td>
-
+                  <td>{{$customer->email}}</td>
+                  
+                  @if ($customer->active == 0)
+                  <td>Không hoạt động</td>
+                  @else
+                  <td>Đang hoạt động</td>
+                  @endif
                   <td>
                     <a type="button" href="{{route('customers.edit',['id' => $customer->id])}}" class="btn btn-primary">
                       <span>
@@ -301,7 +305,3 @@
   <!--/ Advance Styling Options -->
 </div>
 @endsection
-
-
-
-

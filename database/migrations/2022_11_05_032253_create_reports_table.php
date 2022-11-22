@@ -18,6 +18,7 @@ class CreateReportsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('music_id');
             $table->text('message');
+            $table->integer('status')->default(0);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('music_id')->references('id')->on('music');

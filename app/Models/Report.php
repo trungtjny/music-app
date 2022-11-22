@@ -9,5 +9,16 @@ class Report extends Model
 {
     protected $table = 'reports';
     // protected $fillable= ['name', 'avatar_path','description'];
-      protected $guarded= ['id'];
+    protected $guarded= ['id'];
+
+
+    public function user()
+    {
+     return $this->belongsTo(User::class, 'user_id');
+
+    }
+    public function music()
+    {
+        return $this->belongsTo(Music::class,'music_id');
+    }
 }

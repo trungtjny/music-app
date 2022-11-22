@@ -176,4 +176,34 @@ Route::prefix('admin')->group(function () {
             'as' => 'admin.musics.update',
             'uses' => 'App\Http\Controllers\Admin\MusicController@update']);
     });
+
+    //Reports
+
+    Route::prefix('reports')->middleware('permission:manager')->group(function () {
+        Route::get('/',[
+            'as' => 'admin.reports.index',
+            'uses' => 'App\Http\Controllers\Admin\ReportController@index']);
+        Route::get('/create',[
+            'as' => 'admin.reports.create',
+            'uses' => 'App\Http\Controllers\Admin\ReportController@create']);
+        Route::post('/store',[
+            'as' => 'admin.reports.store',
+            'uses' => 'App\Http\Controllers\Admin\ReportController@store']);
+        Route::get('/edit/{id}',[
+            'as' => 'admin.reports.edit',
+            'uses' => 'App\Http\Controllers\Admin\ReportController@edit']);
+        Route::get('/delete/{id}',[
+            'as' => 'admin.reports.delete',
+            'uses' => 'App\Http\Controllers\Admin\ReportController@delete']);
+        Route::post('/update/{id}',[
+            'as' => 'admin.reports.update',
+            'uses' => 'App\Http\Controllers\Admin\ReportController@update']);
+    });
+    //Analize
+    Route::prefix('analize')->middleware('permission:manager')->group(function () {
+        Route::get('/',[
+            'as' => 'admin.analize.index',
+            'uses' => 'App\Http\Controllers\Admin\AnalizeController@index']);
+     
+    });
 });

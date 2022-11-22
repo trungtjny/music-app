@@ -89,7 +89,8 @@
                   <th>ID</th>
                   <th>Tên nhân viên</th>
                   <th>Ảnh đại diện</th>
-                  <th>Mô tả</th>
+                  <th>Email</th>
+                  <th>Trạng thái</th>
                   <th>Hành động</th>
                 </tr>
               </thead>
@@ -108,7 +109,13 @@
 
 
                   </td>
-                  <td>{{$employee->description}}</td>
+                  <td>{{$employee->email}}</td>
+
+                  @if ($employee->active == 0)
+                  <td>Không hoạt động</td>
+                  @else
+                  <td>Đang hoạt động</td>
+                  @endif
 
                   <td>
                     <a type="button" href="{{route('employees.edit',['id' => $employee->id])}}" class="btn btn-primary">
