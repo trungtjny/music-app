@@ -40,7 +40,7 @@ Route::prefix('admin')->group(function () {
      Route::get('/login', [ 'as' => 'admin.auth.index', 'uses' => 'App\Http\Controllers\Admin\AuthController@index']);
      Route::post('/login', [ 'as' => 'admin.auth.login', 'uses' => 'App\Http\Controllers\Admin\AuthController@login']);
     
-     Route::get('/welcome', [ 'as' => 'admin.welcome', 'uses' => 'App\Http\Controllers\Admin\AuthController@welcome']);
+     Route::get('/welcome', [ 'as' => 'admin.welcome', 'uses' => 'App\Http\Controllers\Admin\AuthController@welcome'])->middleware('permission:manager');
      // Đăng xuất
      Route::get('/logout', [ 'as' => 'admin.auth.logout', 'uses' => 'App\Http\Controllers\Admin\AuthController@logout']);
     
