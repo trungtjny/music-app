@@ -16,7 +16,7 @@ class PlaylistController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        $list = $this->playlist->with('music')->get();
+        $list = $this->playlist->where('user_id', $userId)->with('music.singer')->get();
         return $list;
     }
 
