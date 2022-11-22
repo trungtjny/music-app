@@ -90,9 +90,9 @@
         </div>
     </div>
     <!-- Accordion -->
-    <h5 class="mt-4">Accordion</h5>
+    <h5 class="mt-4">Top bài hát</h5>
     <div class="row">
-        <div class="col-md mb-4 mb-md-0">
+        <!-- <div class="col-md mb-4 mb-md-0">
             <small class="text-light fw-semibold">Basic Accordion</small>
             <div class="accordion mt-3" id="accordionExample">
                 <div class="card accordion-item active">
@@ -139,8 +139,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md">
+        </div> -->
+        <!-- <div class="col-md">
             <small class="text-light fw-semibold">Accordion Without Arrow</small>
             <div id="accordionIcon" class="accordion mt-3 accordion-without-arrow">
                 <div class="accordion-item card">
@@ -189,7 +189,98 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+
+
+        <div class="col-md-6 col-lg-6 order-2 mb-4">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="card-title m-0 me-2">Top 5 nhiều lượt nghe tổng</h5>
+                    <div class="dropdown">
+                        <button class="btn p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID" style="">
+                          <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                          <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                          <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="p-0 m-0">
+                        @foreach ($top5MostViewAll as $music)
+                        <li class="d-flex mb-4 pb-1">
+                            <div class="avatar flex-shrink-0 me-3">
+                                <img src="{{$music->thumbnail}}" alt="User" class="rounded">
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                    <h6 class=" d-block mb-1">{{$music->title}}</h6>
+                                    <h6 class="text-muted mb-0">
+                                        @foreach ($music->singer as $artist)
+                                            {{$artist->name}},  
+                                        @endforeach
+                                        
+                                    </h6>
+                                </div>
+                                <div class="user-progress d-flex align-items-center gap-1">
+                                    <h6 class="mb-0">{{$music->views}}</h6>
+                                    <span class="text-muted">Lượt nghe</span>
+                                </div>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
         </div>
+
+        <div class="col-md-6 col-lg-6 order-2 mb-4">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="card-title m-0 me-2">Top 5 nhiều lượt nghe trong ngày</h5>
+                    <div class="dropdown">
+                        <button class="btn p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID" style="">
+                          <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                          <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                          <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="p-0 m-0">
+                        @foreach ($top5MostViewDay as $music)
+                        <li class="d-flex mb-4 pb-1">
+                            <div class="avatar flex-shrink-0 me-3">
+                                <img src="{{$music->thumbnail}}" alt="User" class="rounded">
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                    <h6 class=" d-block mb-1">{{$music->title}}</h6>
+                                    <h6 class="text-muted mb-0">
+                                        @foreach ($music->singer as $artist)
+                                            {{$artist->name}},  
+                                        @endforeach
+                                        
+                                    </h6>
+                                </div>
+                                <div class="user-progress d-flex align-items-center gap-1">
+                                    <h6 class="mb-0">{{$music->views}}</h6>
+                                    <span class="text-muted">Lượt nghe</span>
+                                </div>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
     </div>
     <!--/ Accordion -->
 

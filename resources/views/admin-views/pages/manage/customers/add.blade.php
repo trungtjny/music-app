@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label" for="basic-default-fullname">Họ và tên</label>
                                 <div class="input-group input-group-merge speech-to-text">
                                     <input type="text" name="name" class="form-control" placeholder="Nhập hoặc nói mã sản phẩm" aria-describedby="text-to-speech-addon" required>
@@ -70,15 +70,15 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
 
                                 <label class="form-label" for="basic-default-fullname">Ngày sinh</label>
                                 <div class="input-group ">
-                                    <input type="date" name="dob" class="form-control" placeholder="Nhập hoặc nói tên sản phẩm" aria-describedby="text-to-speech-addon" required>
+                                    <input type="date" name="dob" class="form-control" placeholder="Nhập hoặc nói ngày sinh" aria-describedby="text-to-speech-addon" required>
 
                                 </div>
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label" for="basic-default-fullname">Giới tính</label>
                                 <select class="form-select" name="gender" required>
                                     <option value="0">Nam</option>

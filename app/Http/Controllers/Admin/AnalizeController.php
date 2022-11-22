@@ -39,7 +39,13 @@ class AnalizeController extends Controller
         $totalMusic = $this->music->count();
         $totalCategory = $this->category->count();
         $totalUser = $this->user->count();
-        return view('admin-views.pages.analize.index',compact('totalUser','totalMusic','totalCategory','totalAlbum'));
+
+
+        $top5MostViewAll = $this->music->orderBy('views','DESC')->limit(5)->get();
+        
+        $top5MostViewDay = $this->music->with('singer')->withCount('topDay')->orderBy('top_day_count', 'desc')->limit(5)->get();
+        
+        return view('admin-views.pages.analize.index',compact('totalUser','totalMusic','totalCategory','totalAlbum','top5MostViewAll','top5MostViewDay'));
     }
 
     /**
