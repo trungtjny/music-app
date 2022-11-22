@@ -200,7 +200,7 @@ Route::prefix('admin')->group(function () {
             'uses' => 'App\Http\Controllers\Admin\ReportController@update']);
     });
     //Analize
-    Route::prefix('analize')->middleware('permission:manager')->group(function () {
+    Route::prefix('analize')->middleware('permission:crud_manager')->group(function () {
         Route::get('/',[
             'as' => 'admin.analize.index',
             'uses' => 'App\Http\Controllers\Admin\AnalizeController@index']);

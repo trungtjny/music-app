@@ -119,7 +119,23 @@
 
                         </div>
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Chọn Thể loại:</label>
+
+                                <select class="form-control select2-multiple" name="category_id[]" multiple required>
+
+                                    @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" @foreach($music->category as $musicCategory)
+                                        {{$musicCategory->id == $category->id ? 'selected': ''}}
+                                        @endforeach> {{ $category->name }}
+
+                                    </option>
+
+                                    @endforeach
+                                </select>
+
+                            </div>
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label" for="basic-default-fullname">Chọn Nghệ sĩ:</label>
 
                                 <select class="form-control select2-multiple" name="artist_id[]" multiple required>
@@ -135,7 +151,7 @@
                                 </select>
 
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label" for="basic-default-fullname">Chọn Album</label>
                                 <select class="form-select" name="album_id" required>
                                     @foreach ($albums as $album)
