@@ -4,7 +4,7 @@
 @extends('admin-views.layouts.admin-layout')
 
 @section('admin-title')
-<title>Quản lý danh mục bài hát</title>
+<title>Quản lý Nhân viên</title>
 @endsection
 
 
@@ -100,8 +100,8 @@
                   <td>{{$employee->id}}</td>
                   <td>{{$employee->name}}</td>
                   <td>
-                    @if (isset($employee->avatar_path))
-                    <img class="img-custom" width="150" height="100" src="{{ $employee->avatar_path }}">
+                    @if (isset($employee->avatar))
+                    <img class="img-custom" width="150" height="100" src="{{ $employee->avatar }}">
                     @else
                     <img class="img-custom" width="150" height="100" src="https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
                     @endif

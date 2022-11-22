@@ -87,7 +87,7 @@
                   <th>ID</th>
                   <th>Tên album</th>
                   <th>Ảnh đại diện</th>
-                  <th>Mô tả</th>
+                  <th>Nghệ sĩ</th>
                   <th>Hành động</th>
                 </tr>
               </thead>
@@ -97,15 +97,15 @@
                   <td>{{$album->id}}</td>
                   <td>{{$album->name}}</td>
                   <td>
-                    @if (isset($album->avatar_path))
-                    <img class="img-custom" width="150" height="100" src="{{ $album->avatar_path }}">
+                    @if (isset($album->thumbnail))
+                    <img class="img-custom" width="150" height="100" src="{{ $album->thumbnail }}">
                     @else
                     <img class="img-custom" width="150" height="100" src="https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
                     @endif
 
 
                   </td>
-                  <td>{{$album->description}}</td>
+                  <td>{{$album->singer->name}} {{$album->singer->nickname}}</td>
 
                   <td>
                     <a type="button" href="{{ route('albums.edit', ['id' => $album->id]) }}" class="btn btn-primary">

@@ -55,9 +55,9 @@
                     <form action="{{route('artists.update',['id' => $artist->id ])}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-5">
-                        @if (isset($artist->avatar_path))
+                        @if (isset($artist->avatar))
                         <div class="img-upload-container">
-                            <img class="avatar1 img-upload-holder" src="{{$artist->avatar_path}}">
+                            <img class="avatar1 img-upload-holder" src="{{$artist->avatar}}">
                             <input type="file" name="avatar_path" class="hide-file" onchange="showSinglePicture(this,1);">
                         </div>
                         @else
@@ -69,7 +69,7 @@
                           
                         </div>
                         <div class="row">
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label" for="basic-default-fullname">Họ và tên</label>
                                 <div class="input-group input-group-merge speech-to-text">
                                     <input type="text" name="name" value="{{$artist->name}}" class="form-control" placeholder="Nhập hoặc nói Họ và tên" aria-describedby="text-to-speech-addon" required>
@@ -78,15 +78,24 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Nickname</label>
+                                <div class="input-group input-group-merge speech-to-text">
+                                    <input type="text" name="nickname" value="{{$artist->nickname}}" class="form-control" placeholder="Nhập hoặc nói Nickname" aria-describedby="text-to-speech-addon">
+                                    <span class="input-group-text" id="text-to-speech-addon">
+                                        <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
 
                                 <label class="form-label" for="basic-default-fullname">Ngày sinh</label>
                                 <div class="input-group ">
-                                    <input type="date" name="dob" value="{{$artist->dob}}" class="form-control" placeholder="Nhập hoặc nói tên sản phẩm" aria-describedby="text-to-speech-addon" required>
+                                    <input type="date" name="dob" value="{{$artist->date_of_birth}}" class="form-control" placeholder="Nhập hoặc nói tên sản phẩm" aria-describedby="text-to-speech-addon">
 
                                 </div>
                             </div>
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label" for="basic-default-fullname">Giới tính</label>
                                 <select class="form-select" name="gender" required>
                                     @if ($artist->gender == 0)
@@ -106,7 +115,7 @@
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="basic-default-fullname">Nhập email</label>
                                 <div class="input-group input-group-merge speech-to-text">
-                                    <input type="email" name="email" value="{{$artist->email}}" class="form-control" placeholder="Nhập hoặc nói email" aria-describedby="text-to-speech-addon" required>
+                                    <input type="email" name="email" value="{{$artist->email}}" class="form-control" placeholder="Nhập hoặc nói email" aria-describedby="text-to-speech-addon" required disabled>
                                     <span class="input-group-text" id="text-to-speech-addon">
                                         <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
                                     </span>
@@ -116,7 +125,7 @@
                                 <div class="form-password-toggle">
                                     <label class="form-label" for="basic-default-password32">Password</label>
                                     <div class="input-group input-group-merge">
-                                        <input type="password" class="form-control" name="password" value="{{$artist->password}}" id="basic-default-password32" placeholder="············" aria-describedby="basic-default-password">
+                                        <input type="password" class="form-control" name="password" value="{{$artist->password}}" id="basic-default-password32" placeholder="············" aria-describedby="basic-default-password" required disabled>
                                         <span class="input-group-text cursor-pointer" id="basic-default-password"><i class="bx bx-hide"></i></span>
                                     </div>
                                 </div>

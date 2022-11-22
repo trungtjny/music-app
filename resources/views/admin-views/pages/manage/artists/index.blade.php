@@ -100,8 +100,8 @@
                   <td>{{$artist->id}}</td>
                   <td>{{$artist->name}}</td>
                   <td>
-                    @if (isset($artist->avatar_path))
-                    <img class="img-custom" width="150" height="100" src="{{ $artist->avatar_path }}">
+                    @if (isset($artist->avatar))
+                    <img class="img-custom" width="150" height="100" src="{{ $artist->avatar }}">
                     @else
                     <img class="img-custom" width="150" height="100" src="https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
                     @endif

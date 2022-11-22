@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/admin', function () {
-    return view('admin-views.pages.test-only.test1'); 
+    return view('admin-views.pages.auth.login'); 
 });
 
 
@@ -34,8 +34,22 @@ Route::get('/test2', function () {
 
 
 Route::prefix('admin')->group(function () {
-    //Category
-    Route::prefix('categories')->group(function () {
+
+
+     // Đăng nhập và xử lý đăng nhập
+     Route::get('/login', [ 'as' => 'admin.auth.index', 'uses' => 'App\Http\Controllers\Admin\AuthController@index']);
+     Route::post('/login', [ 'as' => 'admin.auth.login', 'uses' => 'App\Http\Controllers\Admin\AuthController@login']);
+    
+     Route::get('/welcome', [ 'as' => 'admin.welcome', 'uses' => 'App\Http\Controllers\Admin\AuthController@welcome']);
+     // Đăng xuất
+     Route::get('/logout', [ 'as' => 'admin.auth.logout', 'uses' => 'App\Http\Controllers\Admin\AuthController@logout']);
+    
+    
+    //My infomation
+    Route::get('/my-info', [ 'as' => 'admin.myinfo', 'uses' => 'App\Http\Controllers\Admin\UserController@myInfo']);
+
+     //Category
+    Route::prefix('categories')->middleware('permission:crud_manager')->group(function () {
         Route::get('/',[
             'as' => 'categories.index',
             'uses' => 'App\Http\Controllers\Admin\CategoryController@index']);
@@ -55,7 +69,7 @@ Route::prefix('admin')->group(function () {
             'as' => 'categories.update',
             'uses' => 'App\Http\Controllers\Admin\CategoryController@update']);
     });
-    Route::prefix('employees')->group(function () {
+    Route::prefix('employees')->middleware('permission:crud_manager')->group(function () {
         Route::get('/',[
             'as' => 'employees.index',
             'uses' => 'App\Http\Controllers\Admin\UserController@empIndex']);
@@ -76,7 +90,7 @@ Route::prefix('admin')->group(function () {
             'uses' => 'App\Http\Controllers\Admin\UserController@empUpdate']);
     });
 
-    Route::prefix('artists')->group(function () {
+    Route::prefix('artists')->middleware('permission:manager')->group(function () {
         Route::get('/',[
             'as' => 'artists.index',
             'uses' => 'App\Http\Controllers\Admin\UserController@artistIndex']);
@@ -96,7 +110,7 @@ Route::prefix('admin')->group(function () {
             'as' => 'artists.update',
             'uses' => 'App\Http\Controllers\Admin\UserController@artistUpdate']);
     });
-    Route::prefix('customers')->group(function () {
+    Route::prefix('customers')->middleware('permission:manager')->group(function () {
         Route::get('/',[
             'as' => 'customers.index',
             'uses' => 'App\Http\Controllers\Admin\UserController@customerIndex']);
@@ -118,7 +132,7 @@ Route::prefix('admin')->group(function () {
     });
 
      //Albums
-     Route::prefix('albums')->group(function () {
+     Route::prefix('albums')->middleware('permission:manager')->group(function () {
         Route::get('/',[
             'as' => 'albums.index',
             'uses' => 'App\Http\Controllers\Admin\AlbumController@index']);
@@ -137,5 +151,29 @@ Route::prefix('admin')->group(function () {
         Route::post('/update/{id}',[
             'as' => 'albums.update',
             'uses' => 'App\Http\Controllers\Admin\AlbumController@update']);
+    });
+
+
+    //Musics
+    
+      Route::prefix('musics')->middleware('permission:manager')->group(function () {
+        Route::get('/',[
+            'as' => 'admin.musics.index',
+            'uses' => 'App\Http\Controllers\Admin\MusicController@index']);
+        Route::get('/create',[
+            'as' => 'admin.musics.create',
+            'uses' => 'App\Http\Controllers\Admin\MusicController@create']);
+        Route::post('/store',[
+            'as' => 'admin.musics.store',
+            'uses' => 'App\Http\Controllers\Admin\MusicController@store']);
+        Route::get('/edit/{id}',[
+            'as' => 'admin.musics.edit',
+            'uses' => 'App\Http\Controllers\Admin\MusicController@edit']);
+        Route::get('/delete/{id}',[
+            'as' => 'admin.musics.delete',
+            'uses' => 'App\Http\Controllers\Admin\MusicController@delete']);
+        Route::post('/update/{id}',[
+            'as' => 'admin.musics.update',
+            'uses' => 'App\Http\Controllers\Admin\MusicController@update']);
     });
 });

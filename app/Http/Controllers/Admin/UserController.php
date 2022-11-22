@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -16,16 +17,21 @@ class UserController extends Controller
 
     use StorageFileTrait;
     private $user;
-
+    private $role;
     public function __construct()
     {
+        $this->role = new Role;
         $this->user = new User; 
     }
 
+    //My infomation
+    public function myInfo(){
+        return view('admin-views.pages.manage.my-info.index');
+    }
     //employee
     public function empIndex()
     {
-      $employees = $this->user->where('role_id','=',2)->get();
+      $employees = $this->role->where('name', 'admin')->first()->users()->get();
       return view('admin-views.pages.manage.employees.index',compact('employees'));
     }
 
@@ -39,11 +45,10 @@ class UserController extends Controller
            
             $userMapping = [
                 'name' => $request->name,
-                'dob' => $request->dob,
+                'date_of_birth' => $request->dob,
                 'gender' => $request->gender,
                 'email' => $request->email,
-                'password' =>  Hash::make($request->password),
-                'role_id' => 2,
+                'password' => $request->password,
                 'salary_per_month' => $request->salary_per_month,
                 'active' => $request->active,
                 'description' => $request->description,
@@ -52,7 +57,7 @@ class UserController extends Controller
     
             $avatarImageUploaded = $this->storageFileUpload($request, 'avatar_path', 'admin-page/images/employees/' . Str::Slug($request->name) . '/avatar');
             if (!empty($avatarImageUploaded)) {
-                $userMapping['avatar_path'] = $avatarImageUploaded['file_path'];
+                $userMapping['avatar'] = $avatarImageUploaded['file_path'];
                 
             }
             
@@ -68,12 +73,14 @@ class UserController extends Controller
                 
             }
             $userCreated = $this->user->create($userMapping);
+            $userCreated->roles()->attach(2);
             return redirect()->route('employees.index')->with('success','Thêm mới nhân viên thành công!');
             
           
           } catch (\Exception $e) {
                 return redirect()->route('employees.index')->with('error','Thêm mới nhân viên thất bại! Đã xảy ra lỗi');
-          }
+          
+            }
     }
     public function empEdit($id)
     {
@@ -93,11 +100,11 @@ class UserController extends Controller
 
             $userMapping = [
                 'name' => $request->name,
-                'dob' => $request->dob,
+                'date_of_birth' => $request->dob,
                 'gender' => $request->gender,
-                'email' => $request->email,
-                'password' =>  Hash::make($request->password),
-                // 'role_id' => 2,
+                // 'email' => $request->email,
+                // 'password' =>  $request->password,
+            
                 'salary_per_month' => $request->salary_per_month,
                 'active' => $request->active,
                 'description' => $request->description,
@@ -105,7 +112,7 @@ class UserController extends Controller
 
             $avatarImageUploaded = $this->storageFileUpload($request, 'avatar_path', 'admin-page/images/employees/' . Str::Slug($request->name) . '/avatar');
             if (!empty($avatarImageUploaded)) {
-                $userMapping['avatar_path'] = $avatarImageUploaded['file_path'];
+                $userMapping['avatar'] = $avatarImageUploaded['file_path'];
                 
             }
             $idCardFront = $this->storageFileUpload($request, 'id_card_front', 'admin-page/images/employees/' . Str::Slug($request->name) . '/id-card/front');
@@ -119,7 +126,8 @@ class UserController extends Controller
                 
             }
             $userOnUpdated->update($userMapping);
-    
+            $userOnUpdated->roles()->syncWithoutDetaching(2);
+
             return redirect()->route('employees.index')->with('success','Cập nhật nhân viên thành công!');
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->with('error','Cập nhật nhân viên thất bại! Có lỗi xảy ra');
@@ -138,11 +146,15 @@ class UserController extends Controller
             if(File::exists($userImagesDirectory)){
                 File::deleteDirectory(public_path($userImagesDirectory));
             }
+            $userOnDeleted->roles()->detach();
             $userOnDeleted->delete();
+           
+
             return redirect()->route('employees.index')->with('success', 'Xóa nhân viên thành công!');
         } catch (\Exception $e) {
             //throw $th;
             return redirect()->route('employees.index')->with('error', 'Xóa nhân viên thất bại! Đã xảy ra lỗi');
+          
         }
      
     
@@ -155,7 +167,7 @@ class UserController extends Controller
 
     public function artistIndex()
     {
-        $artists = $this->user->where('role_id','=',3)->get();
+        $artists = $this->role->where('name', 'singer')->first()->users()->get();
         return view('admin-views.pages.manage.artists.index',compact('artists'));
     }
 
@@ -169,11 +181,12 @@ class UserController extends Controller
            
             $userMapping = [
                 'name' => $request->name,
-                'dob' => $request->dob,
+                'nickname' => $request->nickname,
+                'date_of_birth' => $request->dob,
                 'gender' => $request->gender,
                 'email' => $request->email,
-                'password' =>  Hash::make($request->password),
-                'role_id' => 3,
+                'password' =>  $request->password,
+          
                 'coin' => $request->coin,
                 'active' => $request->active,
                 'description' => $request->description,
@@ -182,7 +195,7 @@ class UserController extends Controller
     
             $avatarImageUploaded = $this->storageFileUpload($request, 'avatar_path', 'admin-page/images/artists/' . Str::Slug($request->name) . '/avatar');
             if (!empty($avatarImageUploaded)) {
-                $userMapping['avatar_path'] = $avatarImageUploaded['file_path'];
+                $userMapping['avatar'] = $avatarImageUploaded['file_path'];
                 
             }
             
@@ -198,12 +211,14 @@ class UserController extends Controller
                 
             }
             $userCreated = $this->user->create($userMapping);
-            return redirect()->route('artists.index')->with('success','Thêm mới nhân viên thành công!');
+            $userCreated->roles()->attach(3);
+            return redirect()->route('artists.index')->with('success','Thêm mới Nghệ sĩ thành công!');
             
           
           } catch (\Exception $e) {
-                return redirect()->route('artists.index')->with('error','Thêm mới nhân viên thất bại! Đã xảy ra lỗi');
-        }
+                return redirect()->route('artists.index')->with('error','Thêm mới Nghệ sĩ thất bại! Đã xảy ra lỗi');
+                
+            }
     }
     public function artistEdit($id)
     {
@@ -222,11 +237,12 @@ class UserController extends Controller
 
             $userMapping = [
                 'name' => $request->name,
-                'dob' => $request->dob,
+                'nickname' => $request->nickname,
+                'date_of_birth' => $request->dob,
                 'gender' => $request->gender,
-                'email' => $request->email,
-                'password' =>  Hash::make($request->password),
-                // 'role_id' => 3,
+
+                // 'email' => $request->email,
+                // 'password' =>  $request->password,
                 'coin' => $request->coin,
                 'active' => $request->active,
                 'description' => $request->description,
@@ -234,7 +250,7 @@ class UserController extends Controller
 
             $avatarImageUploaded = $this->storageFileUpload($request, 'avatar_path', 'admin-page/images/artists/' . Str::Slug($request->name) . '/avatar');
             if (!empty($avatarImageUploaded)) {
-                $userMapping['avatar_path'] = $avatarImageUploaded['file_path'];
+                $userMapping['avatar'] = $avatarImageUploaded['file_path'];
                 
             }
             $idCardFront = $this->storageFileUpload($request, 'id_card_front', 'admin-page/images/artists/' . Str::Slug($request->name) . '/id-card/front');
@@ -248,7 +264,7 @@ class UserController extends Controller
                 
             }
             $userOnUpdated->update($userMapping);
-    
+            $userOnUpdated->roles()->syncWithoutDetaching(3);
             return redirect()->route('artists.index')->with('success','Cập nhật nghệ sĩ thành công!');
         } catch (\Exception $e) {
             return redirect()->route('artists.index')->with('error','Cập nhật nghệ sĩ thất bại! Có lỗi xảy ra');
@@ -267,6 +283,7 @@ class UserController extends Controller
             if(File::exists($userImagesDirectory)){
                 File::deleteDirectory(public_path($userImagesDirectory));
             }
+            $userOnDeleted->roles()->detach();
             $userOnDeleted->delete();
             return redirect()->route('artists.index')->with('success', 'Xóa nghệ sĩ thành công!');
         } catch (\Exception $e) {
@@ -282,7 +299,7 @@ class UserController extends Controller
 
         public function customerIndex()
         {
-            $customers = $this->user->where('role_id','=',4)->get();
+            $customers = $this->role->where('name', 'user')->first()->users()->get();
             return view('admin-views.pages.manage.customers.index',compact('customers'));
         }
     
@@ -296,11 +313,11 @@ class UserController extends Controller
                
                 $userMapping = [
                     'name' => $request->name,
-                    'dob' => $request->dob,
+                    'date_of_birth' => $request->dob,
                     'gender' => $request->gender,
                     'email' => $request->email,
-                    'password' =>  Hash::make($request->password),
-                    'role_id' => 4,
+                    'password' =>  $request->password,
+                   
                     'coin' => $request->coin,
                     'active' => $request->active,
                     'description' => $request->description,
@@ -309,7 +326,7 @@ class UserController extends Controller
         
                 $avatarImageUploaded = $this->storageFileUpload($request, 'avatar_path', 'admin-page/images/customers/' . Str::Slug($request->name) . '/avatar');
                 if (!empty($avatarImageUploaded)) {
-                    $userMapping['avatar_path'] = $avatarImageUploaded['file_path'];
+                    $userMapping['avatar'] = $avatarImageUploaded['file_path'];
                     
                 }
                 
@@ -325,12 +342,13 @@ class UserController extends Controller
                     
                 }
                 $userCreated = $this->user->create($userMapping);
+                $userCreated->roles()->attach(4);
                 return redirect()->route('customers.index')->with('success','Thêm mới Khách hàng thành công!');
                 
               
               } catch (\Exception $e) {
-                    // return redirect()->route('customers.index')->with('error','Thêm mới Khách hàng thất bại! Đã xảy ra lỗi');
-                    dd($e);
+                    return redirect()->route('customers.index')->with('error','Thêm mới Khách hàng thất bại! Đã xảy ra lỗi');
+            
                 }
           
         }
@@ -353,11 +371,11 @@ class UserController extends Controller
     
                 $userMapping = [
                     'name' => $request->name,
-                    'dob' => $request->dob,
+                    'date_of_birth' => $request->dob,
                     'gender' => $request->gender,
-                    'email' => $request->email,
-                    'password' =>  Hash::make($request->password),
-                    // 'role_id' => 4,
+                    // 'email' => $request->email,
+                    // 'password' =>  $request->password,
+
                     'coin' => $request->coin,
                     'active' => $request->active,
                     'description' => $request->description,
@@ -365,7 +383,7 @@ class UserController extends Controller
     
                 $avatarImageUploaded = $this->storageFileUpload($request, 'avatar_path', 'admin-page/images/customers/' . Str::Slug($request->name) . '/avatar');
                 if (!empty($avatarImageUploaded)) {
-                    $userMapping['avatar_path'] = $avatarImageUploaded['file_path'];
+                    $userMapping['avatar'] = $avatarImageUploaded['file_path'];
                     
                 }
                 $idCardFront = $this->storageFileUpload($request, 'id_card_front', 'admin-page/images/customers/' . Str::Slug($request->name) . '/id-card/front');
@@ -379,11 +397,11 @@ class UserController extends Controller
                     
                 }
                 $userOnUpdated->update($userMapping);
-        
+                $userOnUpdated->roles()->syncWithoutDetaching(4);
                 return redirect()->route('customers.index')->with('success','Cập nhật nghệ sĩ thành công!');
             } catch (\Exception $e) {
                 return redirect()->route('customers.index')->with('error','Cập nhật nghệ sĩ thất bại! Có lỗi xảy ra');
-                // dd($e);
+               
             }
 
         }
@@ -399,11 +417,13 @@ class UserController extends Controller
                 if(File::exists($userImagesDirectory)){
                     File::deleteDirectory(public_path($userImagesDirectory));
                 }
+                $userOnDeleted->roles()->detach();
                 $userOnDeleted->delete();
                 return redirect()->route('customers.index')->with('success', 'Xóa khách hàng thành công!');
             } catch (\Exception $e) {
-                //throw $th;
+          
                 return redirect()->route('customers.index')->with('error', 'Xóa khách hàng thất bại! Đã xảy ra lỗi');
+                
             }
         }
 }

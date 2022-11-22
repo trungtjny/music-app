@@ -91,9 +91,9 @@
               <span class="menu-header-text">Tổng quan</span>
             </li>
             <!-- Dashboard -->
-            <li class="menu-item menu-item {{ request()->is('*test*') ? 'active' : '' }}">
-              <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <li class="menu-item menu-item {{ request()->is('*admin/welcome*') ? 'active' : '' }}">
+              <a href="{{route('admin.welcome')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bxs-home-circle"></i>
                 <div data-i18n="Analytics">Trang chào mừng</div>
               </a>
             </li>
@@ -103,7 +103,7 @@
             </li>
             <li class="menu-item">
               <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <i class="menu-icon tf-icons bx bxs-bar-chart-alt-2"></i>
                 <div data-i18n="Analytics">Thống kê</div>
               </a>
             </li>
@@ -148,25 +148,25 @@
             </li>
             <li class="menu-item {{ request()->is('*admin/categories*') ? 'active' : '' }}">
               <a href="{{route('categories.index')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <i class="menu-icon tf-icons bx bxs-category"></i>
                 <div data-i18n="Analytics">Quản lý danh mục</div>
               </a>
             </li>
             <li class="menu-item {{ request()->is('*admin/albums*') ? 'active' : '' }}">
               <a href="{{route('albums.index')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <i class="menu-icon tf-icons bx bxs-album"></i>
                 <div data-i18n="Analytics">Quản lý album</div>
               </a>
             </li>
             <li class="menu-item {{ request()->is('*admin/musics*') ? 'active' : '' }}">
               <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <i class="menu-icon tf-icons bx bxs-music"></i>
                 <div data-i18n="Analytics">Quản lý bài hát</div>
               </a>
             </li>
             <li class="menu-item {{ request()->is('*admin/musics*') ? 'active' : '' }}">
               <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <i class="menu-icon tf-icons bx bxs-file"></i>
                 <div data-i18n="Analytics">Quản lý báo cáo</div>
               </a>
             </li>
@@ -177,21 +177,12 @@
             <!-- User interface -->
             <li class="menu-item open">
               <a href="javascript:void(0)" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-box"></i>
+                <i class="menu-icon tf-icons bx bxs-user-account"></i>
                 <div data-i18n="User interface">Quản lý tài khoản</div>
               </a>
               <ul class="menu-sub">
         
-                <li class="menu-item {{ request()->is('*test') ? 'active' : '' }}">
-                  <a href="/test" class="menu-link">
-                    <div data-i18n="Alerts">Test</div>
-                  </a>
-                </li>
-                <li class="menu-item {{ request()->is('*test2*') ? 'active' : '' }}">
-                  <a href="/test2" class="menu-link">
-                    <div data-i18n="Badges">Test 2</div>
-                  </a>
-                </li>
+     
                 <li class="menu-item {{ request()->is('*admin/employees*') ? 'active' : '' }}">
                   <a href="{{route('employees.index')}}" class="menu-link">
                     <div data-i18n="Buttons">Quản lý Nhân viên</div>
@@ -220,13 +211,13 @@
             <!-- Tables -->
             <li class="menu-item">
               <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-table"></i>
+                <i class="menu-icon tf-icons bx bxs-user"></i>
                 <div data-i18n="Tables">Thông tin cá nhân</div>
               </a>
             </li>
             <li class="menu-item">
-              <a href="" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-table"></i>
+              <a href="{{route('admin.auth.logout')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-power-off"></i>
                 <div data-i18n="Tables">Đăng xuất</div>
               </a>
             </li>

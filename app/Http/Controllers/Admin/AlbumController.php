@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Album;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -15,10 +16,12 @@ class AlbumController extends Controller
     use StorageFileTrait;
     private $album;
     private $user;
+    private $role;
     public function __construct()
     {
         $this->album = new Album; 
         $this->user = new User; 
+        $this->role = new Role;
     }
     /**
      * Display a listing of the resource.
@@ -40,7 +43,7 @@ class AlbumController extends Controller
     public function create()
     {
         //
-        $artists = $this->user->where('role_id','=',3)->get();
+        $artists = $this->role->where('name', 'singer')->first()->users()->get();
         return view('admin-views.pages.manage.albums.add',compact('artists'));
     }
 
@@ -64,7 +67,7 @@ class AlbumController extends Controller
     
             $avatarImageUploaded = $this->storageFileUpload($request, 'avatar_path', 'admin-page/images/albums/' . Str::Slug($request->name) . '/avatar');
             if (!empty($avatarImageUploaded)) {
-                $albumMapping['avatar_path'] = $avatarImageUploaded['file_path'];
+                $albumMapping['thumbnail'] = $avatarImageUploaded['file_path'];
                 
             }
             $categoryCreated = $this->album->create($albumMapping);
@@ -97,7 +100,7 @@ class AlbumController extends Controller
     {
         try {
             $album = $this->album->find($id);
-            $artists = $this->user->where('role_id','=',3)->get();
+            $artists = $this->role->where('name', 'singer')->first()->users()->get();
             return view('admin-views.pages.manage.albums.edit',compact('album','artists'));
         } catch (\Exception $e) {
             return redirect()->route('albums.index')->with('error','Không tìm thấy album');
@@ -128,7 +131,7 @@ class AlbumController extends Controller
             $avatarImageUploaded = $this->storageFileUpload($request, 'avatar_path', 'admin-page/images/albums/' . Str::slug($request->name) . '/avatar');
             if (!empty($avatarImageUploaded)) {
                
-                $albumMapping['avatar_path'] = $avatarImageUploaded['file_path'];
+                $albumMapping['thumbnail'] = $avatarImageUploaded['file_path'];
             }
             $albumOnUpdated->update($albumMapping);
     
