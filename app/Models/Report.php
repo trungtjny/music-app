@@ -19,6 +19,6 @@ class Report extends Model
     }
     public function music()
     {
-        return $this->belongsTo(Music::class,'music_id');
+        return $this->belongsTo(Music::class,'music_id')->withTrashed();
     }
 }
