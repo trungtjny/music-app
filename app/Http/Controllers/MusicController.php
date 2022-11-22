@@ -163,8 +163,9 @@ class MusicController extends Controller
         if ($listen->album_id) {
             $musicAlbum = Music::where('album_id', $listen->album_id)->with('singer')->get()->toArray();
         }
-
-        $result = array_merge($musicCate[0], $musicSinger, $musicAlbum);
+        if(count($musicCate)) {
+            $result = array_merge($musicCate[0], $musicSinger, $musicAlbum);
+        } else $result = array_merge($musicSinger, $musicAlbum);
         $s = [];
         $count = count($result);
         if ($count > 15) {

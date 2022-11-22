@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\User;
+use Carbon\Carbon;
 use Stripe\Stripe;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StripePaymentController extends Controller
 {
@@ -15,23 +19,33 @@ class StripePaymentController extends Controller
               );
             $res =  $stripe->tokens->create([
                 'card' => [
-                  'number' => '4242424242424242',
-                  'exp_month' => 11,
-                  'exp_year' => 2023,
-                  'cvc' => '314',
+                  'number' => $request->card_number,
+                  'exp_month' =>$request->month,
+                  'exp_year' => $request->year,
+                  'cvc' => $request->cvc,
                 ],
               ]);
             Stripe::setApiKey(env('STRIPE_SECRET'));
-
+            $uid = Auth::id();
+            $user = User::findOrFail($uid);
             $kq = $stripe->charges->create([
-                'amount' => '555',
+                'amount' => '500',
                 'currency' => 'usd',
                 'source' =>$res->id,
-                'description' => 'hahaha'
+                'description' => $user->name,
             ]);
-            return $kq;
+            
+            if(empty($user->vip_expried)) {
+              $now = Carbon::now();
+              $expried = $now->addDays(30);
+            } else {
+              $now = new Carbon($user->vip_expried);
+              $expried = $now->addDays(30);
+            }
+            $user->update(['vip' => 1,'vip_expried' => $expried]);
+            return true;
         } catch (Exception $e) {
-            return "false";
+            return false;
         }
     } 
 }

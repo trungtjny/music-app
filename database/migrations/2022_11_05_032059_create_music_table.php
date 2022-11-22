@@ -22,7 +22,7 @@ class CreateMusicTable extends Migration
             $table->longText('lyrics')->nullable();
             $table->string('thumbnail')->default('asset/default/music.jpg');
             $table->string('file_path');
-            $table->integer('time')->nullable();
+            $table->text('time')->nullable();
             $table->integer('views')->default(0);
             $table->integer('free')->default(1);
             $table->integer('is_recommended')->default(0);

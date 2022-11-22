@@ -36,7 +36,7 @@ class MusicController extends Controller
      */
     public function index()
     {
-        $musics = $this->music->all();
+        $musics = $this->music->with('singer')->get();
         return view('admin-views.pages.manage.musics.index', compact('musics'));
         //
     }
