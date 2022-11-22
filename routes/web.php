@@ -46,7 +46,7 @@ Route::prefix('admin')->group(function () {
     
     
     //My infomation
-    Route::get('/my-info', [ 'as' => 'admin.myinfo', 'uses' => 'App\Http\Controllers\Admin\UserController@myInfo']);
+    Route::get('/my-info', [ 'as' => 'admin.myinfo', 'uses' => 'App\Http\Controllers\Admin\UserController@myInfo'])->middleware('permission:manager');
 
      //Category
     Route::prefix('categories')->middleware('permission:crud_manager')->group(function () {
