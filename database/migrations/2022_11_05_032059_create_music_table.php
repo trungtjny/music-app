@@ -25,6 +25,7 @@ class CreateMusicTable extends Migration
             $table->integer('time')->nullable();
             $table->integer('views')->default(0);
             $table->integer('free')->default(1);
+            $table->integer('is_recommended')->default(0);
             $table->foreign('user_upload')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();

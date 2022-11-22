@@ -16,7 +16,7 @@ class Album extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    protected $fillable = ['name', 'user_id', 'thumbnail'];
+    // protected $fillable = ['name', 'user_id', 'thumbnail'];
 
     public function music()
     {
