@@ -37,7 +37,7 @@ class CreateUsersTable extends Migration
             $table->string('address')->nullable();
             $table->string('date_of_birth')->nullable();
             $table->tinyInteger('vip')->default(0);
-            $table->date('vip_expried');
+            $table->date('vip_expried')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

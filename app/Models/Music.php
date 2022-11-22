@@ -50,7 +50,4 @@ class Music extends Model
         return $this->belongsToMany(Category::class, 'category_music');
     }
 
-    public function album(){
-        return $this->belongsTo(Album::class,'album_id');
-    }
 }
