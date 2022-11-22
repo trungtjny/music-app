@@ -19,4 +19,14 @@ class CategoryController extends Controller
 
         return $list;
     }
+    public function list() {
+        $list = $this->category->get();
+
+        return $list;
+    }
+
+    public function show($id) {
+        $cate = $this->category->with('music.singer')->findOrFail($id);
+        return $cate;
+    }
 }
