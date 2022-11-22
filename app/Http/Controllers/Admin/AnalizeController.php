@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Album;
+use App\Models\Category;
+use App\Models\Music;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AnalizeController extends Controller
@@ -12,10 +17,29 @@ class AnalizeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    private $album;
+    private $user;
+    private $role;
+    private $music;
+    private $category;
+
+    public function __construct()
+    {
+        $this->album = new Album; 
+        $this->user = new User; 
+        $this->role = new Role;
+        $this->music = new Music;
+        $this->category = new Category;
+    }
     public function index()
     {
         //
-        return view('admin-views.pages.analize.index');
+        $totalAlbum = $this->album->count();
+        $totalMusic = $this->music->count();
+        $totalCategory = $this->category->count();
+        $totalUser = $this->user->count();
+        return view('admin-views.pages.analize.index',compact('totalUser','totalMusic','totalCategory','totalAlbum'));
     }
 
     /**

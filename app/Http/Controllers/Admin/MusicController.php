@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Album;
+use App\Models\Category;
 use App\Models\Music;
 use App\Models\Role;
 use App\Models\User;
@@ -18,12 +19,15 @@ class MusicController extends Controller
     private $user;
     private $role;
     private $music;
+    private $category;
+
     public function __construct()
     {
         $this->album = new Album; 
         $this->user = new User; 
         $this->role = new Role;
         $this->music = new Music;
+        $this->category = new Category;
     }
     /**
      * Display a listing of the resource.
@@ -81,8 +85,9 @@ class MusicController extends Controller
         try {
             $music = $this->music->find($id);
             $albums = $this->album->all();
+            $categories = $this->category->all();
             $artists = $this->role->where('name', 'singer')->first()->users()->get();
-            return view('admin-views.pages.manage.musics.edit',compact('music','artists','albums'));
+            return view('admin-views.pages.manage.musics.edit',compact('music','artists','albums','categories'));
         } catch (\Exception $e) {
             return redirect()->route('albums.index')->with('error','Không tìm thấy album');
           
@@ -120,6 +125,7 @@ class MusicController extends Controller
             }
             $musicOnUpdated->update($musicMapping);
             $musicOnUpdated->singer()->sync($request->artist_id);
+            $musicOnUpdated->category()->sync($request->category_id);
             return redirect()->route('admin.musics.index')->with('success','Cập nhật bài hát thành công!');
         } catch (\Exception $e) {
             return redirect()->route('admin.musics.index')->with('error','Cập nhật bài hát thất bại! Có lỗi xảy ra');
@@ -145,6 +151,7 @@ class MusicController extends Controller
                 File::deleteDirectory(public_path($musicAvatarDirectory));
             }
             $musicOnDeleted->singer()->detach();
+            $musicOnDeleted->category()->detach();
             $musicOnDeleted->delete();
             return redirect()->route('admin.musics.index')->with('success', 'Xóa bài hát thành công!');
         } catch (\Exception $e) {

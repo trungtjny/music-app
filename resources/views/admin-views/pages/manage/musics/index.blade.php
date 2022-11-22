@@ -90,7 +90,6 @@
                   <!-- <th>Người upload</th> -->
                   <th>Ảnh đại diện</th>
                   <th>Tên Bài hát</th>
-                  
                   <th>Nghệ sĩ</th>
                   <th>Lượt nghe</th>
                   <th>Hành động</th>

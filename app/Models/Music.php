@@ -31,6 +31,7 @@ class Music extends Model
     {
         return $this->belongsToMany(User::class, 'user_music');
     }
+   
     public function album()
     {
         return $this->belongsTo(Album::class,'album_id');
