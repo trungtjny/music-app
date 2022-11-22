@@ -89,7 +89,8 @@
                   <th>ID</th>
                   <th>Tên Nghệ sĩ</th>
                   <th>Ảnh đại diện</th>
-                  <th>Mô tả</th>
+                  <th>Email</th>
+                  <th>Trạng thái</th>
                   <th>Hành động</th>
                 </tr>
               </thead>
@@ -108,8 +109,12 @@
 
 
                   </td>
-                  <td>{{$artist->description}}</td>
-
+                  <td>{{$artist->email}}</td>
+                    @if ($artist->active == 0)
+                    <td>Không hoạt động</td>
+                    @else
+                    <td>Đang hoạt động</td>
+                    @endif
                   <td>
                     <a type="button" href="{{route('artists.edit',['id' => $artist->id])}}" class="btn btn-primary">
                       <span>

@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 @extends('admin-views.layouts.admin-layout')
 
 @section('admin-title')
-<title>Quản lý Bài hát</title>
+<title>Quản lý Báo cáo bài hát</title>
 @endsection
 
 
@@ -29,7 +27,7 @@
 
 <div class="container-xxl flex-grow-1 container-p-y">
 
-  @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Bài hát', 'pageName' => 'Tất cả Bài hát'])
+  @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Báo cáo bài hát', 'pageName' => 'Tất cả Album'])
 
   <div class="toast-container">
     @if (session('success'))
@@ -68,15 +66,15 @@
       <div class="card mb-4">
         <div class="card-header d-flex justify-content-between my-2">
           <div class="p-2">
-            <h5 class="card-title mb-0">Danh sách Bài hát</h5>
+            <h5 class="card-title mb-0">Danh sách Báo cáo Bài hát</h5>
           </div>
           <div class="pt-md-0">
-            <a href="" class="dt-button create-new btn btn-success" type="button">
+            <!-- <a href="" class="dt-button create-new btn btn-success" type="button">
               <span>
                 <i class="bx bx-plus me-sm-2"></i>
-                <span class="d-none d-sm-inline-block">Thêm mới Bài hát</span>
+                <span class="d-none d-sm-inline-block">Thêm mới Báo cáo</span>
               </span>
-            </a>
+            </a> -->
           </div>
         </div>
 
@@ -87,49 +85,36 @@
               <thead class="table-light">
                 <tr>
                   <th>ID</th>
-                  <!-- <th>Người upload</th> -->
-                  <th>Ảnh đại diện</th>
-                  <th>Tên Bài hát</th>
-                  
-                  <th>Nghệ sĩ</th>
-                  <th>Lượt nghe</th>
+                  <th>Người gửi</th>
+                  <th>Bài hát báo cáo</th>
+      
+                  <th>Trạng thái</th>
                   <th>Hành động</th>
                 </tr>
               </thead>
               <tbody class="table-border-bottom-0">
-              @foreach ($musics as $music)
-
+                @foreach($reports as $report)
                 <tr>
-                  <td>{{$music->id}}</td>
-                  <!-- <td>Ng up</td> -->
-                 
-                  <td>
-                    @if (isset($music->thumbnail))
-                    <img class="img-custom" width="150" height="100" src="{{ $music->thumbnail }}">
-                    @else
-                    <img class="img-custom" width="150" height="100" src="https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
-                    @endif
-                   
+                  <td>{{$report->id}}</td>
+                  <td>{{$report->user->name}}</td>
+                  <td>{{$report->music->title}}</td>
+   
+                  @if ($report->status == 0)
+                  <td>Chưa xử lý</td>
+                  @else
+                  <td>Đã xử lý</td>
+                  @endif
+                
 
-                  </td>
-                  <td>{{$music->title}}</td>
-             
                   <td>
-                        @foreach ($music->singer as $artist)
-                            {{$artist->name}}   {{$artist->nickname}}
-                            <p></p>
-                        @endforeach
-                    </td>
-                    <td>{{$music->views}}</td>
-                  <td>
-                    <a type="button" href="{{route('admin.musics.edit',['id' => $music->id])}}" class="btn btn-primary">
+                    <a type="button" href="{{ route('admin.reports.edit', ['id' => $report->id]) }}" class="btn btn-primary">
                       <span>
                         <i class='bx bxs-edit'></i>
                         <span class="d-none d-sm-inline-block">Sửa</span>
                       </span>
                     </a>
                     <!-- Button trigger modal -->
-                    <a type="button" href="" class="btn btn-danger mx-1 action-delete" data-url="{{route('admin.musics.delete', ['id' => $music->id])}}">
+                    <a type="button" href="" class="btn btn-danger mx-1 action-delete" data-url="{{route('admin.reports.delete', ['id' => $report->id])}}">
                       <span>
                         <i class='bx bx-trash'></i>
                         <span class="d-none d-sm-inline-block">Xóa</span>
@@ -312,7 +297,3 @@
   <!--/ Advance Styling Options -->
 </div>
 @endsection
-
-
-
-

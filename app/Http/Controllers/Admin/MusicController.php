@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\StorageFileTrait;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 class MusicController extends Controller
 {
     use StorageFileTrait;
@@ -131,8 +132,25 @@ class MusicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        try {
+            //code...
+            $musicOnDeleted = $this->music->find($id);
+
+            $musicAvatarDirectory = 'storage/admin-page/images/musics/' . Str::slug($musicOnDeleted->title) . '/avatar'; 
+            
+        
+            if(File::exists($musicAvatarDirectory)){
+                File::deleteDirectory(public_path($musicAvatarDirectory));
+            }
+            $musicOnDeleted->singer()->detach();
+            $musicOnDeleted->delete();
+            return redirect()->route('admin.musics.index')->with('success', 'Xóa bài hát thành công!');
+        } catch (\Exception $e) {
+            //throw $th;
+            // return redirect()->route('admin.musics.index')->with('error', 'Xóa  bài hát thất bại! Đã xảy ra lỗi');
+            dd($e);
+        }
     }
 }

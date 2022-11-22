@@ -101,8 +101,8 @@
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Thống kê</span>
             </li>
-            <li class="menu-item">
-              <a href="" class="menu-link">
+            <li class="menu-item {{ request()->is('*admin/analize*') ? 'active' : '' }}">
+              <a href="{{route('admin.analize.index')}}" class="menu-link ">
                 <i class="menu-icon tf-icons bx bxs-bar-chart-alt-2"></i>
                 <div data-i18n="Analytics">Thống kê</div>
               </a>
@@ -159,13 +159,13 @@
               </a>
             </li>
             <li class="menu-item {{ request()->is('*admin/musics*') ? 'active' : '' }}">
-              <a href="" class="menu-link">
+              <a href="{{route('admin.musics.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bxs-music"></i>
                 <div data-i18n="Analytics">Quản lý bài hát</div>
               </a>
             </li>
-            <li class="menu-item {{ request()->is('*admin/musics*') ? 'active' : '' }}">
-              <a href="" class="menu-link">
+            <li class="menu-item {{ request()->is('*admin/reports*') ? 'active' : '' }}">
+              <a href="{{route('admin.reports.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bxs-file"></i>
                 <div data-i18n="Analytics">Quản lý báo cáo</div>
               </a>
@@ -210,7 +210,7 @@
          
             <!-- Tables -->
             <li class="menu-item">
-              <a href="" class="menu-link">
+              <a href="{{route('admin.myinfo')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bxs-user"></i>
                 <div data-i18n="Tables">Thông tin cá nhân</div>
               </a>
