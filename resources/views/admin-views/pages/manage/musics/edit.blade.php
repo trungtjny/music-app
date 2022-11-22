@@ -123,7 +123,7 @@
                                 <label class="form-label" for="basic-default-fullname">Chọn Thể loại:</label>
 
                                 <select class="form-control select2-multiple" name="category_id[]" multiple required>
-
+                                
                                     @foreach ($categories as $category)
                                     <option value="{{ $category->id }}" @foreach($music->category as $musicCategory)
                                         {{$musicCategory->id == $category->id ? 'selected': ''}}
@@ -153,8 +153,9 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="basic-default-fullname">Chọn Album</label>
-                                <select class="form-select" name="album_id" required>
-                                    @foreach ($albums as $album)
+                                <select class="form-select select2-single" name="album_id" >
+                                <option value="0">-- Không thuộc album nào --</option>    
+                                  @foreach ($albums as $album)
                                     <option value="{{ $album->id }}" {{( $album->id == $music->album_id) ? 'selected' : '' }}>{{$album->name}}</option>
                                     @endforeach
                                 </select>
