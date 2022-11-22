@@ -2,7 +2,7 @@
 @extends('admin-views.layouts.admin-layout')
 
 @section('admin-title')
-<title>Sửa mới Album Bài hát</title>
+<title>Sửa Bài hát</title>
 @endsection
 
 @section('admin-js')
@@ -15,13 +15,21 @@
 @section('admin-css')
 <link rel="stylesheet" href="{{ asset('resources/css/admin-page/reuseable/img-fit.css') }}">
 </link>
+<link rel="stylesheet" href="{{ asset('resources/css/admin-page/reuseable/hide-input-file.css') }}">
+</link>
 @endsection
+
+<style>
+    .select2 {
+        width: 100% !important;
+    }
+</style>
 
 @section('admin-content')
 
 <div class="container-xxl flex-grow-1 container-p-y">
 
-    @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Album sản phẩm', 'pageName' => 'Sửa Album'])
+    @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Bài hát', 'pageName' => 'Sửa Bài hát'])
 
 
     <div class="row">
@@ -31,84 +39,160 @@
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between my-2">
                     <div class="p-2">
-                        <h5 class="card-title mb-0">Sửa Album bài hát</h5>
+                        <h5 class="card-title mb-0">Sửa Bài hát</h5>
                     </div>
                     <!-- <div class="pt-md-0">
                         <button class="dt-button create-new btn btn-primary" type="button">
                             <span>
                                 <i class="bx bx-plus me-sm-2"></i>
-                                <span class="d-none d-sm-inline-block">Sửa mới Album</span>
+                                <span class="d-none d-sm-inline-block">Thêm mới danh mục</span>
                             </span>
                         </button>
                     </div> -->
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('albums.update',['id' => $album->id])}}" method="post" enctype="multipart/form-data">
+                    <form action="{{route('admin.musics.update',['id' => $music->id ])}}" method="post" enctype="multipart/form-data">
                         @csrf
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name">Tên Album:</label>
-                            <div class="col-sm-10">
+                        <div class="row mb-5">
+                            @if (isset($music->thumbnail))
+                            <div class="img-upload-container">
+                                <img class="avatar1 img-upload-holder" src="{{$music->thumbnail}}">
+                                <input type="file" name="thumbnail" class="hide-file" onchange="showSinglePicture(this,1);">
+                            </div>
+                            @else
+                            <div class="img-upload-container">
+                                <img class="avatar1 img-upload-holder" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                                <input type="file" name="thumbnail" class="hide-file" onchange="showSinglePicture(this,1);">
+                            </div>
+                            @endif
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Tên bài hát</label>
                                 <div class="input-group input-group-merge speech-to-text">
-                                    <input type="text" name="name" value="{{$album->name}}" class="form-control" placeholder="Nhập hoặc nói tên Album" aria-describedby="text-to-speech-addon" required>
+                                    <input type="text" name="title" value="{{$music->title}}" class="form-control" placeholder="Nhập hoặc nói Tên bài hát" aria-describedby="text-to-speech-addon" required>
+                                    <span class="input-group-text" id="text-to-speech-addon">
+                                        <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label" for="basic-default-fullname">Lượt nghe</label>
+                                <div class="input-group ">
+                                    <input type="number" min="0" name="views" value="{{$music->views}}" class="form-control" placeholder="Nhập hoặc nói lượt nghe" aria-describedby="text-to-speech-addon" required disabled>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Tải miễn phí</label>
+                                <select class="form-select" name="free" required>
+                                    @if ($music->free == 0)
+                                    <option value="0" selected>Không</option>
+                                    <option value="1">Có</option>
+                                    @else
+                                    <option value="0">Không</option>
+                                    <option value="1" selected>Có</option>
+
+                                    @endif
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Đề xuất</label>
+                                <select class="form-select" name="is_recommended" required>
+                                    @if ($music->is_recommended == 0)
+                                    <option value="0" selected>Không</option>
+                                    <option value="1">Có</option>
+                                    @else
+                                    <option value="0">Không</option>
+                                    <option value="1" selected>Có</option>
+
+                                    @endif
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Chọn Nghệ sĩ:</label>
+
+                                <select class="form-control select2-multiple" name="artist_id[]" multiple required>
+
+                                    @foreach ($artists as $artist)
+                                    <option value="{{ $artist->id }}" @foreach($music->singer as $musicArtist)
+                                        {{$musicArtist->id == $artist->id ? 'selected': ''}}
+                                        @endforeach> {{ $artist->name }} {{ $artist->nickname }}
+
+                                    </option>
+
+                                    @endforeach
+                                </select>
+
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Chọn Album</label>
+                                <select class="form-select" name="album_id" required>
+                                    @foreach ($albums as $album)
+                                    <option value="{{ $album->id }}" {{( $album->id == $music->album_id) ? 'selected' : '' }}>{{$album->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label" for="basic-default-fullname">File nhạc</label>
+                                <audio controls class="form-control">
+                                    <source src="{{$music->file_path}}" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Độ dài</label>
+                                <div class="input-group input-group-merge speech-to-text">
+                                    <input type="text" name="time" value="{{$music->time}}" class="form-control" placeholder="Nhập hoặc nói Độ dài bài hát" aria-describedby="text-to-speech-addon" disabled>
                                     <span class="input-group-text" id="text-to-speech-addon">
                                         <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
                                     </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name">Nghệ sĩ:</label>
-                            <div class="col-sm-10">
-                                <select class="form-control select2-single" name="user_id" required>
-                                    @foreach ($artists as $artist)
-                                    <option value="{{ $artist->id }}" {{( $artist->id == $artist->user_id) ? 'selected' : '' }}>{{$artist->name}} {{$artist->nickname}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-company">Ảnh đại diện Album:</label>
-                            <div class="col-sm-10">
-                                <input type="file" class="form-control" name="avatar_path" onchange="showSinglePicture(this,1);" id="basic-default-company" placeholder="ACME Inc.">
-                                @if (isset($album->thumbnail))
-                                    <img class="avatar1 my-3 img-custom" width="250" height="200" src="{{ $album->thumbnail }}">
-                                @else
-                                    <img class="avatar1 my-3 img-custom" width="250" height="200" src="  https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
-                                @endif
-                            </div>
-                        </div>
+
                         <!-- <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
-                            <div class="col-sm-10">
-                                <div class="input-group input-group-merge">
-                                    <input type="text" id="basic-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-default-email2">
-                                    <span class="input-group-text" id="basic-default-email2">@example.com</span>
-                                </div>
-                                <div class="form-text">You can use letters, numbers &amp; periods</div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone No</label>
-                            <div class="col-sm-10">
-                                <input type="text" id="basic-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-default-phone">
+                            <label class="form-label" for="basic-default-company">Mô tả ngắn</label>
+                            <div class="input-group input-group-merge speech-to-text">
+                                <textarea class="form-control" name="short_description" placeholder="Điền hoặc nói mô tả ngắn" rows="4"></textarea>
+                                <span class="input-group-text">
+                                    <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
+                                </span>
                             </div>
                         </div> -->
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-message">Mô tả chi tiết: </label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control tinymce-editor" name="description" id="exampleFormControlTextarea1" rows="12">{{$album->description}}</textarea>
+                        <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Lời bài hát</label>
+                            <div class="input-group input-group-merge speech-to-text">
+                                <textarea class="form-control" name="lyrics" placeholder="Nhập hoặc nói lời bài hát" rows="8">{{$music->lyrics}}</textarea>
+                                <span class="input-group-text">
+                                    <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
+                                </span>
                             </div>
                         </div>
-                        <div class="row justify-content-end">
-                            <div class="col-sm-10">
-                                <button type="submit" class="btn btn-primary">Xác nhận Sửa </button>
-                                <button type="reset" class="btn btn-secondary">Hủy </button>
-                            </div>
+
+                        <div class="mb-3">
+                            <label for="exampleFormControlTextarea1" class="form-label">Tiểu sử hoặc mô tả</label>
+                            <textarea class="form-control tinymce-editor" name="description" id="exampleFormControlTextarea1" rows="20">{{$music->description}}</textarea>
                         </div>
+
+                        <button type="submit" class="btn btn-primary">Xác nhận Sửa</button>
+                        <button type="reset" class="btn btn-secondary">Hủy</button>
                     </form>
                 </div>
-
 
             </div>
         </div>

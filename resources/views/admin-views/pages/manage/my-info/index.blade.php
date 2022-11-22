@@ -2,7 +2,7 @@
 @extends('admin-views.layouts.admin-layout')
 
 @section('admin-title')
-<title>Sửa mới Album Bài hát</title>
+<title>Thông tin cá nhân</title>
 @endsection
 
 @section('admin-js')
@@ -15,13 +15,21 @@
 @section('admin-css')
 <link rel="stylesheet" href="{{ asset('resources/css/admin-page/reuseable/img-fit.css') }}">
 </link>
+<link rel="stylesheet" href="{{ asset('resources/css/admin-page/reuseable/hide-input-file.css') }}">
+</link>
 @endsection
+
+<style>
+    .select2 {
+        width: 100% !important;
+    }
+</style>
 
 @section('admin-content')
 
 <div class="container-xxl flex-grow-1 container-p-y">
 
-    @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Album sản phẩm', 'pageName' => 'Sửa Album'])
+    @include('admin-views.partials.content-header',['pageParent' => 'Trang chủ', 'pageName' => 'Thông tin cá nhân'])
 
 
     <div class="row">
@@ -31,84 +39,158 @@
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between my-2">
                     <div class="p-2">
-                        <h5 class="card-title mb-0">Sửa Album bài hát</h5>
+                        <h5 class="card-title mb-0">Thông tin cá nhân</h5>
                     </div>
                     <!-- <div class="pt-md-0">
                         <button class="dt-button create-new btn btn-primary" type="button">
                             <span>
                                 <i class="bx bx-plus me-sm-2"></i>
-                                <span class="d-none d-sm-inline-block">Sửa mới Album</span>
+                                <span class="d-none d-sm-inline-block">Thêm mới danh mục</span>
                             </span>
                         </button>
                     </div> -->
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('albums.update',['id' => $album->id])}}" method="post" enctype="multipart/form-data">
+                    <form action="" method="post" enctype="multipart/form-data">
                         @csrf
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name">Tên Album:</label>
-                            <div class="col-sm-10">
+                        <div class="row mb-5">
+                        @if (isset(Auth::user()->avatar))
+                        <div class="img-upload-container">
+                            <img class="avatar1 img-upload-holder" src="{{Auth::user()->avatar}}">
+                            <input type="file" name="avatar_path" class="hide-file" onchange="showSinglePicture(this,1);">
+                        </div>
+                        @else
+                        <div class="img-upload-container">
+                            <img class="avatar1 img-upload-holder" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                            <input type="file" name="avatar_path" class="hide-file" onchange="showSinglePicture(this,1);">
+                        </div>
+                        @endif
+                          
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Họ và tên</label>
                                 <div class="input-group input-group-merge speech-to-text">
-                                    <input type="text" name="name" value="{{$album->name}}" class="form-control" placeholder="Nhập hoặc nói tên Album" aria-describedby="text-to-speech-addon" required>
+                                    <input type="text" name="name" value="{{Auth::user()->name}}" class="form-control" placeholder="Nhập hoặc nói Họ và tên" aria-describedby="text-to-speech-addon" required>
+                                    <span class="input-group-text" id="text-to-speech-addon">
+                                        <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label" for="basic-default-fullname">Ngày sinh</label>
+                                <div class="input-group ">
+                                    <input type="date" name="dob" value="{{Auth::user()->date_of_birth}}" class="form-control" placeholder="Nhập hoặc nói tên sản phẩm" aria-describedby="text-to-speech-addon" required>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Giới tính</label>
+                                <select class="form-select" name="gender" required>
+                                    @if (Auth::user()->gender == 0)
+                                        <option value="0" selected>Nam</option>
+                                        <option value="1">Nữ</option>
+                                    @else
+                                        <option value="0">Nam</option>
+                                        <option value="1" selected>Nữ</option>
+
+                                    @endif
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Nhập email</label>
+                                <div class="input-group input-group-merge speech-to-text">
+                                    <input type="email" name="email" value="{{Auth::user()->email}}" class="form-control" placeholder="Nhập hoặc nói email" aria-describedby="text-to-speech-addon" required>
+                                    <span class="input-group-text" id="text-to-speech-addon">
+                                        <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-password-toggle">
+                                    <label class="form-label" for="basic-default-password32">Password</label>
+                                    <div class="input-group input-group-merge">
+                                        <input type="password" class="form-control" name="password" value="{{Auth::user()->password}}" id="basic-default-password32" placeholder="············" aria-describedby="basic-default-password">
+                                        <span class="input-group-text cursor-pointer" id="basic-default-password"><i class="bx bx-hide"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Trạng thái</label>
+                                <select class="form-select" name="active" required>
+                                    @if (Auth::user()->active == 1)
+                                        <option value="1" selected>Đang hoạt động</option>
+                                        <option value="0">Không hoạt động</option>
+                                    @else
+                                        <option value="1">Đang hoạt động</option>
+                                        <option value="0" selected>Không hoạt động</option>
+
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+         
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Lương tháng</label>
+                                <div class="input-group input-group-merge speech-to-text">
+                                    <input type="number" min="0" name="salary_per_month" value="{{Auth::user()->salary_per_month}}" class="form-control" placeholder="Nhập hoặc nói lương tháng" aria-describedby="text-to-speech-addon" required>
                                     <span class="input-group-text" id="text-to-speech-addon">
                                         <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
                                     </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name">Nghệ sĩ:</label>
-                            <div class="col-sm-10">
-                                <select class="form-control select2-single" name="user_id" required>
-                                    @foreach ($artists as $artist)
-                                    <option value="{{ $artist->id }}" {{( $artist->id == $artist->user_id) ? 'selected' : '' }}>{{$artist->name}} {{$artist->nickname}}</option>
-                                    @endforeach
-                                </select>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Ảnh CMT mặt trước:</label>
+                                <div class="">
+                                    <input type="file" class="form-control" name="id_card_front" onchange="showSinglePicture(this,2);" id="" placeholder="ACME Inc.">
+                                    @if (isset(Auth::user()->id_card_front))
+                                    <img class="avatar2 my-3 img-custom" width="250" height="200" src="{{ Auth::user()->id_card_front }}">
+                                    @else
+                                    <img class="avatar2 my-3 img-custom" width="250" height="200" src="  https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-company">Ảnh đại diện Album:</label>
-                            <div class="col-sm-10">
-                                <input type="file" class="form-control" name="avatar_path" onchange="showSinglePicture(this,1);" id="basic-default-company" placeholder="ACME Inc.">
-                                @if (isset($album->thumbnail))
-                                    <img class="avatar1 my-3 img-custom" width="250" height="200" src="{{ $album->thumbnail }}">
-                                @else
-                                    <img class="avatar1 my-3 img-custom" width="250" height="200" src="  https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
-                                @endif
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="basic-default-fullname">Ảnh CMT mặt sau:</label>
+                                <div class="">
+                                    <input type="file" class="form-control" name="id_card_back" onchange="showSinglePicture(this,3);" id="" placeholder="ACME Inc.">
+                                    @if (isset(Auth::user()->id_card_back))
+                                    <img class="avatar3 my-3 img-custom" width="250" height="200" src="{{ Auth::user()->id_card_back }}">
+                                    @else
+                                    <img class="avatar3 my-3 img-custom" width="250" height="200" src="  https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg">
+                                    @endif
+                                </div>
                             </div>
+
                         </div>
                         <!-- <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
-                            <div class="col-sm-10">
-                                <div class="input-group input-group-merge">
-                                    <input type="text" id="basic-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-default-email2">
-                                    <span class="input-group-text" id="basic-default-email2">@example.com</span>
-                                </div>
-                                <div class="form-text">You can use letters, numbers &amp; periods</div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone No</label>
-                            <div class="col-sm-10">
-                                <input type="text" id="basic-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-default-phone">
+                            <label class="form-label" for="basic-default-company">Mô tả ngắn</label>
+                            <div class="input-group input-group-merge speech-to-text">
+                                <textarea class="form-control" name="short_description" placeholder="Điền hoặc nói mô tả ngắn" rows="4"></textarea>
+                                <span class="input-group-text">
+                                    <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
+                                </span>
                             </div>
                         </div> -->
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-message">Mô tả chi tiết: </label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control tinymce-editor" name="description" id="exampleFormControlTextarea1" rows="12">{{$album->description}}</textarea>
-                            </div>
+
+                        <div class="mb-3">
+                            <label for="exampleFormControlTextarea1" class="form-label">Tiểu sử hoặc mô tả</label>
+                            <textarea class="form-control tinymce-editor" name="description" id="exampleFormControlTextarea1" rows="25">{{Auth::user()->description}}</textarea>
                         </div>
-                        <div class="row justify-content-end">
-                            <div class="col-sm-10">
-                                <button type="submit" class="btn btn-primary">Xác nhận Sửa </button>
-                                <button type="reset" class="btn btn-secondary">Hủy </button>
-                            </div>
-                        </div>
+
+                        <!-- <button type="submit" class="btn btn-primary">Xác nhận Sửa</button>
+                        <button type="reset" class="btn btn-secondary">Hủy</button> -->
                     </form>
                 </div>
-
 
             </div>
         </div>

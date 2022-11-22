@@ -20,13 +20,9 @@ class AuthController extends Controller
     {
         return view('admin-views.pages.auth.login'); 
     }
-    public function logout()
-    {
-        
-        Auth::logout();
 
-        return redirect()->back();
-    }
+
+
     public function login(Request $request){
        
 
@@ -34,8 +30,8 @@ class AuthController extends Controller
             'email' =>'required|min:6',
             'password' =>'required|min:6'
         ], [
-            'username.required' =>'Tên đăng nhập không được để trống',
-            'username.min' => 'Tên đăng nhập chứa tối thiểu :min ký tự',
+            'email.required' =>'Email không được để trống',
+            'email.min' => 'Email chứa tối thiểu :min ký tự',
             'password.required' =>'Mật khẩu không được để trống',
             'password.min' => 'Mật khẩu chứa tối thiểu :min ký tự'
         ]);
@@ -44,13 +40,26 @@ class AuthController extends Controller
             'password' =>$request->input('password'),
             /* 'role' => 1 */ ])
         ){
-            dd(123);
+            return redirect()->route('admin.welcome');
+       
         }
         else {
             session()->flash('error', 'Email hoặc mật khẩu không chính xác');
-            return redirect()->back();
+           return redirect()->route('admin.auth.index');
         }
         
+    }
+    public function logout()
+    {
+        
+        Auth::logout();
+
+        return redirect()->route('admin.auth.index');
+    }
+   
+    public function welcome()
+    {
+        return view('admin-views.welcome');
     }
     
 }

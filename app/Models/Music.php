@@ -31,7 +31,10 @@ class Music extends Model
     {
         return $this->belongsToMany(User::class, 'user_music');
     }
-
+    public function album()
+    {
+        return $this->belongsTo(Album::class,'album_id');
+    }
     public function musicView()
     {
         return $this->hasMany(MusicView::class, 'music_id')->whereDate('created_at', '>', Carbon::today()->subDay(28));

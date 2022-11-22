@@ -62,7 +62,7 @@
                             <div class="col-sm-10">
                                 <select class="form-control select2-single" name="user_id" required>
                                     @foreach ($artists as $artist)
-                                    <option value="{{$artist->id}}">{{$artist->name}}</option>
+                                    <option value="{{$artist->id}}">{{$artist->name}} {{$artist->nickname}}</option>
                                     @endforeach
                                 </select>
                             </div>
