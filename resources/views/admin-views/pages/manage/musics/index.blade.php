@@ -70,14 +70,14 @@
           <div class="p-2">
             <h5 class="card-title mb-0">Danh sách Bài hát</h5>
           </div>
-          <div class="pt-md-0">
+          <!-- <div class="pt-md-0">
             <a href="" class="dt-button create-new btn btn-success" type="button">
               <span>
                 <i class="bx bx-plus me-sm-2"></i>
                 <span class="d-none d-sm-inline-block">Thêm mới Bài hát</span>
               </span>
             </a>
-          </div>
+          </div> -->
         </div>
 
 

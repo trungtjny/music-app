@@ -18,7 +18,7 @@
 
 <div class="container-xxl flex-grow-1 container-p-y">
 
-    @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Báo cáo bài hát', 'pageName' => 'Sửa danh mục'])
+    @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Báo cáo bài hát', 'pageName' => 'Sửa báo cáo'])
 
 
     <div class="row">

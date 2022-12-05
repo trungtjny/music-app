@@ -269,7 +269,7 @@
                                     </h6>
                                 </div>
                                 <div class="user-progress d-flex align-items-center gap-1">
-                                    <h6 class="mb-0">{{$music->views}}</h6>
+                                    <h6 class="mb-0">{{$music->top_day_count}}</h6>
                                     <span class="text-muted">Lượt nghe</span>
                                 </div>
                             </div>

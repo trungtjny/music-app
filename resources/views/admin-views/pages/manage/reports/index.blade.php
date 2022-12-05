@@ -27,7 +27,7 @@
 
 <div class="container-xxl flex-grow-1 container-p-y">
 
-  @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Báo cáo bài hát', 'pageName' => 'Tất cả Album'])
+  @include('admin-views.partials.content-header',['pageParent' => 'Quản lý Báo cáo bài hát', 'pageName' => 'Tất cả Báo cáo'])
 
   <div class="toast-container">
     @if (session('success'))
